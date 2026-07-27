@@ -1,2 +1,26 @@
 .DS_Store
 .cursor/
+
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.mobileprovision
+.npmrc
+.netrc
+
+# Local/development output
+.netlify/
+dist/
+.dist-build/
+*.log
+*.map
+*.bak
+*.tmp
+*~

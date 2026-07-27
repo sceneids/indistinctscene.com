@@ -4,17 +4,30 @@
 
   const prefetchDelay = 100;
 
-  function isInternal(url) {
-    const a = document.createElement('a');
-    a.href = url;
-    return a.hostname === window.location.hostname || !a.hostname;
+  function getInternalPageUrl(url) {
+    let parsedUrl;
+
+    try {
+      parsedUrl = new URL(url, window.location.href);
+    } catch {
+      return null;
+    }
+
+    if (parsedUrl.origin !== window.location.origin || !['http:', 'https:'].includes(parsedUrl.protocol)) {
+      return null;
+    }
+
+    return parsedUrl;
   }
 
   function prefetchPage(url) {
-    if (!document.querySelector(`link[rel="prefetch"][href="${url}"]`)) {
+    const alreadyPrefetched = Array.from(document.querySelectorAll('link[rel="prefetch"]'))
+      .some((link) => link.href === url.href);
+
+    if (!alreadyPrefetched) {
       const link = document.createElement('link');
       link.rel = 'prefetch';
-      link.href = url;
+      link.href = url.href;
       document.head.appendChild(link);
     }
   }
@@ -24,11 +37,11 @@
     const link = e.target.closest('a');
     if (!link) return;
     const href = link.getAttribute('href');
-    if (href && isInternal(href) && !href.startsWith('#') && href.endsWith('.html')) {
-      const timeout = setTimeout(() => prefetchPage(href), prefetchDelay);
+    const pageUrl = href ? getInternalPageUrl(href) : null;
+    if (pageUrl && !href.startsWith('#') && pageUrl.pathname.endsWith('.html')) {
+      const timeout = setTimeout(() => prefetchPage(pageUrl), prefetchDelay);
       link.addEventListener('mouseleave', () => clearTimeout(timeout), { once: true });
     }
   }, true);
 
 })();
-

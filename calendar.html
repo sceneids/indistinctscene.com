@@ -295,8 +295,8 @@
     <div class="cal-header">
       <span class="cal-month-year" id="calMonthYear"></span>
       <div class="cal-nav">
-        <button id="prevMonth" aria-label="Previous month">&#8249;</button>
-        <button id="nextMonth" aria-label="Next month">&#8250;</button>
+        <button id="prevMonth" type="button" aria-label="Previous month">&#8249;</button>
+        <button id="nextMonth" type="button" aria-label="Next month">&#8250;</button>
       </div>
     </div>
     <div class="cal-weekdays">
@@ -315,44 +315,44 @@
   <div class="gallery-overlay" id="galleryOverlay">
     <div class="overlay-header">
       <span class="overlay-title">Photos</span>
-      <button class="overlay-close" id="overlayClose">&#10005;</button>
+      <button class="overlay-close" id="overlayClose" type="button" aria-label="Close photo gallery">&#10005;</button>
     </div>
     <div class="overlay-scroll" id="overlayScroll"></div>
   </div>
 
   <script>
     const IMAGES = [
-      "Abuelas photos/000000010004.jpg",
-      "Abuelas photos/000000010013.jpg",
-      "Abuelas photos/000000010015.jpg",
-      "Abuelas photos/000000010016.jpg",
-      "Abuelas photos/000000030030.jpg",
-      "Abuelas photos/000000060009.jpg",
-      "Abuelas photos/000000060025.jpg",
-      "Abuelas photos/000000060028.jpg",
-      "Abuelas photos/000000060029.jpg",
-      "Abuelas photos/000000060030.jpg",
-      "Abuelas photos/000000060039.jpg",
-      "Abuelas photos/000000070001.jpg",
-      "Abuelas photos/000000070009.jpg",
-      "Abuelas photos/000000070013.jpg",
-      "Abuelas photos/000000080009.jpg",
-      "Abuelas photos/000000080010.jpg",
-      "Abuelas photos/000000080011.jpg",
-      "Abuelas photos/000000080012.jpg",
-      "Abuelas photos/000000080013.jpg",
-      "Abuelas photos/000000080014.jpg",
-      "Abuelas photos/000000080024.jpg",
-      "Abuelas photos/000000080025.jpg",
-      "Abuelas photos/000000080029.jpg",
-      "Abuelas photos/000000090001.jpg",
-      "Abuelas photos/000000090002.jpg",
-      "Abuelas photos/000000090005.jpg",
-      "Abuelas photos/000000090017.jpg",
-      "Abuelas photos/000000090018.jpg",
-      "Abuelas photos/000000090029.jpg",
-      "Abuelas photos/000000090032.jpg",
-      "Abuelas photos/000000090034.jpg"
+      "gallery-assets/large/000000010004.jpg",
+      "gallery-assets/large/000000010013.jpg",
+      "gallery-assets/large/000000010015.jpg",
+      "gallery-assets/large/000000010016.jpg",
+      "gallery-assets/large/000000030030.jpg",
+      "gallery-assets/large/000000060009.jpg",
+      "gallery-assets/large/000000060025.jpg",
+      "gallery-assets/large/000000060028.jpg",
+      "gallery-assets/large/000000060029.jpg",
+      "gallery-assets/large/000000060030.jpg",
+      "gallery-assets/large/000000060039.jpg",
+      "gallery-assets/large/000000070001.jpg",
+      "gallery-assets/large/000000070009.jpg",
+      "gallery-assets/large/000000070013.jpg",
+      "gallery-assets/large/000000080009.jpg",
+      "gallery-assets/large/000000080010.jpg",
+      "gallery-assets/large/000000080011.jpg",
+      "gallery-assets/large/000000080012.jpg",
+      "gallery-assets/large/000000080013.jpg",
+      "gallery-assets/large/000000080014.jpg",
+      "gallery-assets/large/000000080024.jpg",
+      "gallery-assets/large/000000080025.jpg",
+      "gallery-assets/large/000000080029.jpg",
+      "gallery-assets/large/000000090001.jpg",
+      "gallery-assets/large/000000090002.jpg",
+      "gallery-assets/large/000000090005.jpg",
+      "gallery-assets/large/000000090017.jpg",
+      "gallery-assets/large/000000090018.jpg",
+      "gallery-assets/large/000000090029.jpg",
+      "gallery-assets/large/000000090032.jpg",
+      "gallery-assets/large/000000090034.jpg"
     ];
 
     // ── Build gallery overlay once ──
@@ -394,7 +394,7 @@
 
     function renderCalendar(year, month) {
       const grid = document.getElementById('calGrid');
-      grid.innerHTML = '';
+      grid.replaceChildren();
       document.getElementById('calMonthYear').textContent = `${MONTHS[month]} ${year}`;
 
       const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
