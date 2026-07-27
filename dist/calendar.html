@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendar</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: "Times New Roman", Times, serif;
+      background: #f2f2f7;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 60px 20px 40px;
+      color: #1c1c1e;
+    }
+
+    .back-home {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: "Times New Roman", Times, serif;
+      font-style: italic;
+      font-size: 24px;
+      color: #000;
+      text-decoration: none;
+      z-index: 9999;
+    }
+
+    .back-home:hover,
+    .back-home:focus-visible {
+      color: #000;
+      background: #fff;
+      mix-blend-mode: difference;
+      text-decoration: none;
+    }
+
+    /* ── Calendar card ── */
+    .calendar-card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* ── Header ── */
+    .cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px 12px;
+      border-bottom: 1px solid #e5e5ea;
+    }
+
+    .cal-month-year {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: #1c1c1e;
+    }
+
+    .cal-nav {
+      display: flex;
+      gap: 6px;
+    }
+
+    .cal-nav button {
+      width: 30px;
+      height: 30px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #007aff;
+      font-size: 18px;
+      transition: background 0.15s;
+    }
+
+    .cal-nav button:hover {
+      background: rgba(0,122,255,0.1);
+    }
+
+    /* ── Weekday row ── */
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      padding: 10px 16px 4px;
+    }
+
+    .cal-weekday {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #8e8e93;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 4px 0;
+    }
+
+    /* ── Days grid ── */
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      padding: 0 16px 20px;
+      gap: 2px;
+    }
+
+    /* ── Individual day cell ── */
+    .cal-day {
+      position: relative;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 15px;
+      font-weight: 400;
+      cursor: pointer;
+      color: #1c1c1e;
+      transition: background 0.18s, transform 0.18s, color 0.18s, box-shadow 0.18s;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .cal-day.empty {
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .cal-day.today .day-num {
+      background: #ff3b30;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cal-day .day-num {
+      position: relative;
+      z-index: 2;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    /* ── Liquid glass hover ── */
+    .cal-day:not(.empty)::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, rgba(255,255,255,0.7) 0%, rgba(200,220,255,0.35) 40%, rgba(0,122,255,0.12) 100%);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow:
+        0 2px 12px rgba(0,122,255,0.18),
+        inset 0 1px 2px rgba(255,255,255,0.8),
+        inset 0 -1px 2px rgba(0,80,200,0.08);
+      opacity: 0;
+      transform: scale(0.5);
+      transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+      z-index: 1;
+    }
+
+    .cal-day:not(.empty):hover::before {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .cal-day:not(.empty):hover .day-num {
+      color: #007aff;
+    }
+
+    .cal-day:not(.empty):active::before {
+      transform: scale(0.95);
+      transition: transform 0.08s ease;
+    }
+
+    .cal-day.today:hover .day-num {
+      background: #ff3b30;
+      color: #fff;
+    }
+
+    /* ── Gallery overlay ── */
+    .gallery-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      animation: overlayIn 0.25s ease;
+    }
+
+    .gallery-overlay.open {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes overlayIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .overlay-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      color: #fff;
+    }
+
+    .overlay-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+
+    .overlay-close {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: background 0.15s;
+    }
+
+    .overlay-close:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .overlay-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 24px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .overlay-scroll::-webkit-scrollbar { width: 6px; }
+    .overlay-scroll::-webkit-scrollbar-track { background: transparent; }
+    .overlay-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 3px; }
+
+    .overlay-img-wrap {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #111;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .overlay-img-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-home">i</a>
+
+  <div class="calendar-card">
+    <div class="cal-header">
+      <span class="cal-month-year" id="calMonthYear"></span>
+      <div class="cal-nav">
+        <button id="prevMonth" type="button" aria-label="Previous month">&#8249;</button>
+        <button id="nextMonth" type="button" aria-label="Next month">&#8250;</button>
+      </div>
+    </div>
+    <div class="cal-weekdays">
+      <div class="cal-weekday">Sun</div>
+      <div class="cal-weekday">Mon</div>
+      <div class="cal-weekday">Tue</div>
+      <div class="cal-weekday">Wed</div>
+      <div class="cal-weekday">Thu</div>
+      <div class="cal-weekday">Fri</div>
+      <div class="cal-weekday">Sat</div>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+
+  <!-- Gallery overlay — shows all images on any date press -->
+  <div class="gallery-overlay" id="galleryOverlay">
+    <div class="overlay-header">
+      <span class="overlay-title">Photos</span>
+      <button class="overlay-close" id="overlayClose" type="button" aria-label="Close photo gallery">&#10005;</button>
+    </div>
+    <div class="overlay-scroll" id="overlayScroll"></div>
+  </div>
+
+  <script>
+    const IMAGES = [
+      "gallery-assets/large/000000010004.jpg",
+      "gallery-assets/large/000000010013.jpg",
+      "gallery-assets/large/000000010015.jpg",
+      "gallery-assets/large/000000010016.jpg",
+      "gallery-assets/large/000000030030.jpg",
+      "gallery-assets/large/000000060009.jpg",
+      "gallery-assets/large/000000060025.jpg",
+      "gallery-assets/large/000000060028.jpg",
+      "gallery-assets/large/000000060029.jpg",
+      "gallery-assets/large/000000060030.jpg",
+      "gallery-assets/large/000000060039.jpg",
+      "gallery-assets/large/000000070001.jpg",
+      "gallery-assets/large/000000070009.jpg",
+      "gallery-assets/large/000000070013.jpg",
+      "gallery-assets/large/000000080009.jpg",
+      "gallery-assets/large/000000080010.jpg",
+      "gallery-assets/large/000000080011.jpg",
+      "gallery-assets/large/000000080012.jpg",
+      "gallery-assets/large/000000080013.jpg",
+      "gallery-assets/large/000000080014.jpg",
+      "gallery-assets/large/000000080024.jpg",
+      "gallery-assets/large/000000080025.jpg",
+      "gallery-assets/large/000000080029.jpg",
+      "gallery-assets/large/000000090001.jpg",
+      "gallery-assets/large/000000090002.jpg",
+      "gallery-assets/large/000000090005.jpg",
+      "gallery-assets/large/000000090017.jpg",
+      "gallery-assets/large/000000090018.jpg",
+      "gallery-assets/large/000000090029.jpg",
+      "gallery-assets/large/000000090032.jpg",
+      "gallery-assets/large/000000090034.jpg"
+    ];
+
+    // ── Build gallery overlay once ──
+    const overlayScroll = document.getElementById('overlayScroll');
+    IMAGES.forEach(src => {
+      const wrap = document.createElement('div');
+      wrap.className = 'overlay-img-wrap';
+      const img = document.createElement('img');
+      img.src = src;
+      img.loading = 'lazy';
+      wrap.appendChild(img);
+      overlayScroll.appendChild(wrap);
+    });
+
+    // ── Overlay open/close ──
+    const overlay = document.getElementById('galleryOverlay');
+    document.getElementById('overlayClose').addEventListener('click', closeOverlay);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOverlay(); });
+
+    function openOverlay() {
+      overlayScroll.scrollTop = 0;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeOverlay() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── Calendar rendering ──
+    const MONTHS = ['January','February','March','April','May','June',
+                    'July','August','September','October','November','December'];
+
+    const today = new Date();
+    let viewYear  = today.getFullYear();
+    let viewMonth = today.getMonth();
+
+    function renderCalendar(year, month) {
+      const grid = document.getElementById('calGrid');
+      grid.replaceChildren();
+      document.getElementById('calMonthYear').textContent = `${MONTHS[month]} ${year}`;
+
+      const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      // Empty cells before first day
+      for (let i = 0; i < firstDay; i++) {
+        const empty = document.createElement('div');
+        empty.className = 'cal-day empty';
+        grid.appendChild(empty);
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-day';
+
+        const isToday = (d === today.getDate() && month === today.getMonth() && year === today.getFullYear());
+        if (isToday) cell.classList.add('today');
+
+        const num = document.createElement('span');
+        num.className = 'day-num';
+        num.textContent = d;
+        cell.appendChild(num);
+
+        cell.addEventListener('click', openOverlay);
+        grid.appendChild(cell);
+      }
+    }
+
+    document.getElementById('prevMonth').addEventListener('click', () => {
+      viewMonth--;
+      if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+      renderCalendar(viewYear, viewMonth);
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', () => {
+      viewMonth++;
+      if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+      renderCalendar(viewYear, viewMonth);
+    });
+
+    renderCalendar(viewYear, viewMonth);
+  </script>
+</body>
+</html>

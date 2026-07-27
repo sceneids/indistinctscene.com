@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            background: #fff;
+            color: #000;
+            font-family: "Times New Roman", Times, serif;
+            font-weight: 300;
+        }
+
+        .site-home-i {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            z-index: 10;
+            color: #000;
+            font-size: 18px;
+            line-height: 1;
+            text-decoration: none;
+            text-transform: lowercase;
+            transform: translate(-50%, -50%);
+        }
+
+        .site-home-i:hover,
+        .site-home-i:focus-visible {
+            color: #000;
+            background: #fff;
+            mix-blend-mode: difference;
+            text-decoration: none;
+        }
+
+        #mix-dropdowns {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            max-width: min(440px, calc(100vw - 80px));
+        }
+
+        #mix-dropdowns .mix-link {
+            color: #000;
+            font-size: 13px;
+            line-height: 1;
+            text-decoration: none;
+        }
+
+        #mix-dropdowns .mix-link:hover,
+        #mix-dropdowns .mix-link:focus-visible {
+            color: #fff;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+    <a class="site-home-i" href="index.html">i</a>
+
+    <div id="mix-dropdowns">
+        <a class="mix-link" href="https://soundcloud.com/indistinctscene/ids-radio-w-saintgermane">03-06-2026</a>
+        <a class="mix-link" href="https://soundcloud.com/indistinctscene0/saint-germane-w-hnko-30102025">10-03-2025</a>
+    </div>
+</body>
+</html>

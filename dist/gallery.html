@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gallery</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      overflow: hidden;
+      background: #fff;
+      color: #000;
+      font-family: "Times New Roman", Times, serif;
+      font-weight: 300;
+      touch-action: none;
+    }
+
+    .home-i {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      z-index: 100;
+      color: #000;
+      font-family: "Times New Roman", Times, serif;
+      font-size: 18px;
+      line-height: 1;
+      text-decoration: none;
+      transform: translate(-50%, -50%);
+    }
+
+    .home-i:hover,
+    .home-i:focus-visible {
+      color: #000;
+      background: #fff;
+      mix-blend-mode: difference;
+      text-decoration: none;
+    }
+
+    .field {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    #web {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .photo-node {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      width: clamp(58px, 8vw, 112px);
+      margin: 0;
+      cursor: zoom-in;
+      transform: translate3d(var(--x, 50vw), var(--y, 50vh), 0) translate(-50%, -50%) scale(var(--scale, 1));
+      transform-origin: center;
+      transition: filter 240ms ease, opacity 240ms ease;
+      will-change: transform;
+    }
+
+    .photo-node img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 0;
+      opacity: 0.92;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .photo-node.is-active {
+      z-index: 50;
+      cursor: zoom-in;
+      filter: saturate(1.02);
+    }
+
+    .photo-node.is-active img {
+      opacity: 1;
+    }
+
+    body.has-active .photo-node:not(.is-active) {
+      opacity: 0.42;
+    }
+
+    .bio-panel {
+      position: fixed;
+      top: 50%;
+      right: clamp(12px, 6vw, 86px);
+      z-index: 25;
+      width: min(30vw, 280px);
+      min-height: 36vh;
+      padding: clamp(18px, 2.4vw, 30px);
+      color: rgba(0, 0, 0, 0.24);
+      font-family: "Times New Roman", Times, serif;
+      font-size: clamp(13px, 1.45vw, 20px);
+      line-height: 1.15;
+      letter-spacing: 0;
+      text-transform: lowercase;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(14px, -50%, 0);
+      transition: opacity 260ms ease, transform 260ms ease;
+      backdrop-filter: blur(18px) saturate(1.25);
+      -webkit-backdrop-filter: blur(18px) saturate(1.25);
+    }
+
+    body.has-active .bio-panel {
+      opacity: 1;
+      transform: translate3d(0, -50%, 0);
+    }
+
+    @media (max-width: 680px) {
+      .photo-node {
+        width: clamp(40px, 12.5vw, 58px);
+      }
+
+      .bio-panel {
+        right: 12px;
+        width: 38vw;
+        min-height: 28vh;
+        font-size: clamp(13px, 3.8vw, 18px);
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <a class="home-i" href="index.html">i</a>
+
+  <main class="field" aria-label="floating gallery">
+    <canvas id="web" aria-hidden="true"></canvas>
+    <figure class="photo-node" data-x="0.28" data-y="0.34" data-vx="7" data-vy="5"><img src="gallery-assets/thumbs/000000010004.jpg" data-full="gallery-assets/large/000000010004.jpg" width="420" height="274" alt="photo 1" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.38" data-y="0.26" data-vx="-6" data-vy="5"><img src="gallery-assets/thumbs/000000010013.jpg" data-full="gallery-assets/large/000000010013.jpg" width="420" height="274" alt="photo 2" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.50" data-y="0.28" data-vx="5" data-vy="-6"><img src="gallery-assets/thumbs/000000010015.jpg" data-full="gallery-assets/large/000000010015.jpg" width="420" height="274" alt="photo 3" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.62" data-y="0.31" data-vx="-5" data-vy="6"><img src="gallery-assets/thumbs/000000010016.jpg" data-full="gallery-assets/large/000000010016.jpg" width="420" height="274" alt="photo 4" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.72" data-y="0.39" data-vx="6" data-vy="-5"><img src="gallery-assets/thumbs/000000030030.jpg" data-full="gallery-assets/large/000000030030.jpg" width="420" height="274" alt="photo 5" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.24" data-y="0.48" data-vx="6" data-vy="-4"><img src="gallery-assets/thumbs/000000060009.jpg" data-full="gallery-assets/large/000000060009.jpg" width="420" height="274" alt="photo 6" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.34" data-y="0.43" data-vx="-5" data-vy="-5"><img src="gallery-assets/thumbs/000000060025.jpg" data-full="gallery-assets/large/000000060025.jpg" width="420" height="274" alt="photo 7" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.46" data-y="0.42" data-vx="5" data-vy="4"><img src="gallery-assets/thumbs/000000060028.jpg" data-full="gallery-assets/large/000000060028.jpg" width="420" height="274" alt="photo 8" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.58" data-y="0.44" data-vx="-6" data-vy="-4"><img src="gallery-assets/thumbs/000000060029.jpg" data-full="gallery-assets/large/000000060029.jpg" width="420" height="274" alt="photo 9" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.68" data-y="0.51" data-vx="5" data-vy="5"><img src="gallery-assets/thumbs/000000060030.jpg" data-full="gallery-assets/large/000000060030.jpg" width="420" height="274" alt="photo 10" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.77" data-y="0.56" data-vx="-5" data-vy="-6"><img src="gallery-assets/thumbs/000000060039.jpg" data-full="gallery-assets/large/000000060039.jpg" width="420" height="274" alt="photo 11" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.29" data-y="0.61" data-vx="6" data-vy="4"><img src="gallery-assets/thumbs/000000070001.jpg" data-full="gallery-assets/large/000000070001.jpg" width="420" height="274" alt="photo 12" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.40" data-y="0.56" data-vx="-4" data-vy="6"><img src="gallery-assets/thumbs/000000070009.jpg" data-full="gallery-assets/large/000000070009.jpg" width="420" height="274" alt="photo 13" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.52" data-y="0.58" data-vx="5" data-vy="-5"><img src="gallery-assets/thumbs/000000070013.jpg" data-full="gallery-assets/large/000000070013.jpg" width="420" height="274" alt="photo 14" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.62" data-y="0.63" data-vx="-6" data-vy="4"><img src="gallery-assets/thumbs/000000080009.jpg" data-full="gallery-assets/large/000000080009.jpg" width="420" height="274" alt="photo 15" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.35" data-y="0.72" data-vx="5" data-vy="-5"><img src="gallery-assets/thumbs/000000080010.jpg" data-full="gallery-assets/large/000000080010.jpg" width="420" height="274" alt="photo 16" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.47" data-y="0.70" data-vx="-5" data-vy="-4"><img src="gallery-assets/thumbs/000000080011.jpg" data-full="gallery-assets/large/000000080011.jpg" width="420" height="274" alt="photo 17" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.59" data-y="0.73" data-vx="4" data-vy="5"><img src="gallery-assets/thumbs/000000080012.jpg" data-full="gallery-assets/large/000000080012.jpg" width="420" height="274" alt="photo 18" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.69" data-y="0.69" data-vx="-5" data-vy="5"><img src="gallery-assets/thumbs/000000080013.jpg" data-full="gallery-assets/large/000000080013.jpg" width="420" height="274" alt="photo 19" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.25" data-y="0.37" data-vx="-4" data-vy="5"><img src="gallery-assets/thumbs/000000080014.jpg" data-full="gallery-assets/large/000000080014.jpg" width="420" height="274" alt="photo 20" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.74" data-y="0.47" data-vx="4" data-vy="6"><img src="gallery-assets/thumbs/000000080024.jpg" data-full="gallery-assets/large/000000080024.jpg" width="420" height="274" alt="photo 21" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.31" data-y="0.52" data-vx="-5" data-vy="3"><img src="gallery-assets/thumbs/000000080025.jpg" data-full="gallery-assets/large/000000080025.jpg" width="420" height="274" alt="photo 22" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.55" data-y="0.36" data-vx="4" data-vy="-5"><img src="gallery-assets/thumbs/000000080029.jpg" data-full="gallery-assets/large/000000080029.jpg" width="420" height="274" alt="photo 23" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.43" data-y="0.34" data-vx="-4" data-vy="4"><img src="gallery-assets/thumbs/000000090001.jpg" data-full="gallery-assets/large/000000090001.jpg" width="420" height="274" alt="photo 24" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.64" data-y="0.39" data-vx="5" data-vy="3"><img src="gallery-assets/thumbs/000000090002.jpg" data-full="gallery-assets/large/000000090002.jpg" width="420" height="274" alt="photo 25" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.37" data-y="0.63" data-vx="3" data-vy="-6"><img src="gallery-assets/thumbs/000000090005.jpg" data-full="gallery-assets/large/000000090005.jpg" width="420" height="274" alt="photo 26" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.51" data-y="0.50" data-vx="-3" data-vy="5"><img src="gallery-assets/thumbs/000000090017.jpg" data-full="gallery-assets/large/000000090017.jpg" width="420" height="274" alt="photo 27" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.60" data-y="0.54" data-vx="4" data-vy="-4"><img src="gallery-assets/thumbs/000000090018.jpg" data-full="gallery-assets/large/000000090018.jpg" width="420" height="274" alt="photo 28" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.45" data-y="0.66" data-vx="-4" data-vy="3"><img src="gallery-assets/thumbs/000000090029.jpg" data-full="gallery-assets/large/000000090029.jpg" width="420" height="274" alt="photo 29" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.56" data-y="0.67" data-vx="3" data-vy="-5"><img src="gallery-assets/thumbs/000000090032.jpg" data-full="gallery-assets/large/000000090032.jpg" width="420" height="274" alt="photo 30" loading="eager" decoding="async"></figure>
+    <figure class="photo-node" data-x="0.70" data-y="0.61" data-vx="-4" data-vy="4"><img src="gallery-assets/thumbs/000000090034.jpg" data-full="gallery-assets/large/000000090034.jpg" width="420" height="274" alt="photo 31" loading="eager" decoding="async"></figure>
+  </main>
+
+  <aside class="bio-panel" aria-hidden="true">add a bio here</aside>
+
+  <script>
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canvas = document.getElementById('web');
+    const ctx = canvas.getContext('2d');
+    const nodeElements = Array.from(document.querySelectorAll('.photo-node'));
+    const loadedFullImages = new Set();
+    let activeNode = null;
+    let lastTime = performance.now();
+    let width = 0;
+    let height = 0;
+
+    const nodes = nodeElements.map((element) => ({
+      element,
+      image: element.querySelector('img'),
+      xRatio: Number(element.dataset.x),
+      yRatio: Number(element.dataset.y),
+      vx: Number(element.dataset.vx),
+      vy: Number(element.dataset.vy),
+      x: 0,
+      y: 0,
+      scale: 1,
+      targetScale: 1,
+    }));
+
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      nodes.forEach((node) => {
+        if (!node.x && !node.y) {
+          node.x = node.xRatio * width;
+          node.y = node.yRatio * height;
+        }
+        keepNodeInBounds(node);
+      });
+    }
+
+    function keepNodeInBounds(node) {
+      const isSmallScreen = width < 680;
+      const minX = width * (isSmallScreen ? 0.28 : 0.18);
+      const maxX = width * (isSmallScreen ? 0.68 : 0.82);
+      const minY = height * (isSmallScreen ? 0.28 : 0.24);
+      const maxY = height * (isSmallScreen ? 0.72 : 0.78);
+
+      if (node.x < minX || node.x > maxX) {
+        node.vx *= -1;
+        node.x = Math.min(Math.max(node.x, minX), maxX);
+      }
+
+      if (node.y < minY || node.y > maxY) {
+        node.vy *= -1;
+        node.y = Math.min(Math.max(node.y, minY), maxY);
+      }
+    }
+
+    function preloadFullImage(node) {
+      const fullSrc = node.image.dataset.full;
+      if (!fullSrc || loadedFullImages.has(fullSrc)) return;
+
+      const image = new Image();
+      image.decoding = 'async';
+      image.onload = () => {
+        loadedFullImages.add(fullSrc);
+        node.image.src = fullSrc;
+      };
+      image.src = fullSrc;
+    }
+
+    function setActiveNode(node) {
+      if (activeNode && activeNode !== node) {
+        activeNode.element.classList.remove('is-active');
+        activeNode.targetScale = 1;
+      }
+
+      activeNode = node;
+      document.body.classList.add('has-active');
+      node.element.classList.add('is-active');
+      node.targetScale = Math.max(node.targetScale, 1.35);
+      preloadFullImage(node);
+    }
+
+    function clearActiveNode(node) {
+      if (activeNode !== node) return;
+      node.element.classList.remove('is-active');
+      node.targetScale = 1;
+      activeNode = null;
+      document.body.classList.remove('has-active');
+    }
+
+    function renderNode(node) {
+      node.scale += (node.targetScale - node.scale) * 0.12;
+      node.element.style.setProperty('--x', `${node.x}px`);
+      node.element.style.setProperty('--y', `${node.y}px`);
+      node.element.style.setProperty('--scale', node.scale.toFixed(3));
+    }
+
+    function drawWeb() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.lineWidth = 0.45;
+
+      for (let i = 0; i < nodes.length; i += 1) {
+        for (let j = i + 1; j < nodes.length; j += 1) {
+          const a = nodes[i];
+          const b = nodes[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const distance = Math.hypot(dx, dy);
+
+          if (distance < Math.min(width, height) * 0.22) {
+            const alpha = (1 - distance / (Math.min(width, height) * 0.22)) * 0.12;
+            ctx.strokeStyle = `rgba(0, 0, 0, ${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate(time) {
+      const seconds = Math.min((time - lastTime) / 1000, 0.05);
+      lastTime = time;
+
+      nodes.forEach((node) => {
+        if (!reduceMotion && node !== activeNode) {
+          node.x += node.vx * seconds;
+          node.y += node.vy * seconds;
+          keepNodeInBounds(node);
+        }
+        renderNode(node);
+      });
+
+      drawWeb();
+      requestAnimationFrame(animate);
+    }
+
+    nodeElements.forEach((element, index) => {
+      const node = nodes[index];
+
+      element.addEventListener('pointerenter', () => setActiveNode(node));
+      element.addEventListener('pointerleave', () => clearActiveNode(node));
+      element.addEventListener('wheel', (event) => {
+        event.preventDefault();
+        setActiveNode(node);
+        node.targetScale = Math.min(Math.max(node.targetScale - event.deltaY * 0.003, 1.2), 4.6);
+      }, { passive: false });
+    });
+
+    function backgroundPreload() {
+      const queue = nodes.slice();
+
+      function scheduleNext() {
+        if (!queue.length) return;
+
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadNext, { timeout: 1600 });
+        } else {
+          setTimeout(loadNext, 300);
+        }
+      }
+
+      function loadNext() {
+        preloadFullImage(queue.shift());
+        scheduleNext();
+      }
+
+      setTimeout(scheduleNext, 900);
+    }
+
+    resizeCanvas();
+    nodes.forEach(renderNode);
+    requestAnimationFrame(animate);
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('load', backgroundPreload);
+  </script>
+</body>
+</html>

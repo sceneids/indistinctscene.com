@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>scene i</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            overflow: hidden;
+            background: #fff;
+            color: #000;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        .time-location {
+            position: fixed;
+            top: 18px;
+            left: 55%;
+            z-index: 10;
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            color: #222;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+        }
+
+        .local-time {
+            color: #aaa;
+        }
+
+        .home-mark {
+            position: fixed;
+            inset: 0;
+            display: grid;
+            place-items: center;
+        }
+
+        .center-i {
+            color: #000;
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            font-size: 34px;
+            font-weight: 400;
+            line-height: 1;
+            text-decoration: none;
+            text-transform: lowercase;
+        }
+
+        .center-i:hover,
+        .center-i:focus-visible,
+        .orbit-link:hover,
+        .orbit-link:focus-visible {
+            color: #fff;
+            background: #000;
+            text-decoration: none;
+        }
+
+        .center-i:focus-visible,
+        .orbit-link:focus-visible {
+            outline: 1px solid #000;
+            outline-offset: 4px;
+        }
+
+        .orbit-item {
+            --radius: clamp(82px, 11vw, 110px);
+            --duration: 18s;
+            --delay: 0s;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            width: 0;
+            height: 0;
+            animation: orbit var(--duration) linear infinite;
+            animation-delay: var(--delay);
+            transform-origin: 0 0;
+        }
+
+        .orbit-link {
+            display: inline-block;
+            color: #000;
+            font-size: clamp(14px, 1.35vw, 17px);
+            font-weight: 400;
+            line-height: 1;
+            text-decoration: none;
+            text-transform: lowercase;
+            white-space: nowrap;
+            animation: counter-orbit var(--duration) linear infinite;
+            animation-delay: var(--delay);
+            transform: translateX(var(--radius)) rotate(0deg);
+        }
+
+        body:has(.orbit-item:hover, .orbit-item:focus-within) .orbit-item,
+        body:has(.orbit-item:hover, .orbit-item:focus-within) .orbit-link {
+            animation-play-state: paused;
+        }
+
+        .copyright {
+            position: fixed;
+            left: 50%;
+            bottom: 18px;
+            margin: 0;
+            font-size: 11px;
+            line-height: 1;
+            transform: translateX(-50%);
+        }
+
+        @keyframes orbit {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes counter-orbit {
+            from {
+                transform: translateX(var(--radius)) rotate(0deg);
+            }
+
+            to {
+                transform: translateX(var(--radius)) rotate(-360deg);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .orbit-item,
+            .orbit-link {
+                animation: none;
+            }
+
+            .orbit-item.mixes {
+                transform: rotate(0deg);
+            }
+
+            .orbit-item.consume {
+                transform: rotate(120deg);
+            }
+
+            .orbit-item.contact {
+                transform: rotate(240deg);
+            }
+        }
+
+        @media (max-width: 650px) {
+            .time-location {
+                left: auto;
+                right: 20px;
+                gap: 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="time-location" aria-label="Local time and location">
+        <time class="local-time" id="local-time"></time>
+        <span id="visitor-location"></span>
+    </div>
+
+    <main class="home-mark" aria-label="scene i">
+        <a class="center-i" href="index.html">i</a>
+    </main>
+
+    <div class="orbit-item mixes">
+        <a class="orbit-link" href="mixes.html">mixes</a>
+    </div>
+
+    <div class="orbit-item consume" style="--delay: -6s;">
+        <a class="orbit-link" href="consume.html">consume</a>
+    </div>
+
+    <div class="orbit-item contact" style="--delay: -12s;">
+        <a class="orbit-link" href="contact.html">contact</a>
+    </div>
+
+    <footer class="copyright">&copy; 2026</footer>
+
+    <script>
+        const localTime = document.getElementById("local-time");
+        const visitorLocation = document.getElementById("visitor-location");
+        const visitorTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+        const localTimeFormat = new Intl.DateTimeFormat("en-US", {
+            timeZone: visitorTimeZone,
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        });
+
+        function getLocationName(timeZone) {
+            const timeZoneParts = timeZone.split("/");
+            const locationName = timeZoneParts[timeZoneParts.length - 1];
+
+            return locationName.replaceAll("_", " ");
+        }
+
+        function updateLocalTime() {
+            const now = new Date();
+            const timeParts = Object.fromEntries(
+                localTimeFormat.formatToParts(now).map(({ type, value }) => [type, value])
+            );
+
+            localTime.textContent = `${timeParts.hour}:${timeParts.minute} ${timeParts.dayPeriod}`;
+            localTime.dateTime = now.toISOString();
+        }
+
+        visitorLocation.textContent = getLocationName(visitorTimeZone);
+        updateLocalTime();
+        setInterval(updateLocalTime, 30000);
+    </script>
+</body>
+</html>
