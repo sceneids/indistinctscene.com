@@ -22,15 +22,6 @@
             font-family: "Times New Roman", Times, serif;
         }
 
-        #generative-art {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
         .time-location {
             position: fixed;
             top: 18px;
@@ -153,8 +144,6 @@
     </style>
 </head>
 <body>
-    <canvas id="generative-art" aria-hidden="true"></canvas>
-
     <div class="time-location" aria-label="Local time and location">
         <time class="local-time" id="local-time"></time>
         <span id="visitor-location"></span>
@@ -179,70 +168,6 @@
     <footer class="copyright">&copy; 2026</footer>
 
     <script>
-        const artCanvas = document.getElementById("generative-art");
-        const artContext = artCanvas.getContext("2d");
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        let artTime = 0;
-        let artFrame;
-
-        function sizeArtCanvas() {
-            const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
-            artCanvas.width = Math.round(window.innerWidth * pixelRatio);
-            artCanvas.height = Math.round(window.innerHeight * pixelRatio);
-            artContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-        }
-
-        function drawGenerativeArt(frameTime = 0) {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            const scale = Math.min(width, height) / 470;
-            const swimTime = frameTime / 1000;
-            const swimX = Math.sin(swimTime * 0.24) * width * 0.22
-                + Math.sin(swimTime * 0.11) * width * 0.06;
-            const swimY = Math.cos(swimTime * 0.19) * height * 0.16
-                + Math.sin(swimTime * 0.13) * height * 0.05;
-            const originX = width / 2 - 200 * scale + swimX;
-            // The sketch's plotted mass sits low in its original 400px coordinate space.
-            const originY = height / 2 - 330 * scale + swimY;
-
-            artContext.clearRect(0, 0, width, height);
-            artContext.fillStyle = "rgba(0, 0, 0, 0.48)";
-
-            for (let i = 10000; i > 0; i -= 1) {
-                const y = i / 235;
-                const k = (4 + Math.cos(i / 9 - artTime * 2)) * Math.cos(i / 35);
-                const e = y / 7 - 13;
-                const d = Math.hypot(k, e);
-                const q = 2 * Math.sin(k * 3)
-                    - y / 35 * k * (9 + k * Math.sin(Math.cos(e) * 9 - d * 2 + artTime));
-                const c = d - artTime;
-                const x = q + 40 * Math.cos(c) + 200;
-                const pointY = q * Math.sin(c) + d * 35;
-
-                artContext.fillRect(
-                    originX + x * scale,
-                    originY + pointY * scale,
-                    Math.max(0.7, scale * 0.75),
-                    Math.max(0.7, scale * 0.75)
-                );
-            }
-
-            if (!reduceMotion.matches) {
-                artTime += Math.PI / 80;
-                artFrame = requestAnimationFrame(drawGenerativeArt);
-            }
-        }
-
-        function restartGenerativeArt() {
-            cancelAnimationFrame(artFrame);
-            sizeArtCanvas();
-            drawGenerativeArt();
-        }
-
-        window.addEventListener("resize", restartGenerativeArt);
-        reduceMotion.addEventListener("change", restartGenerativeArt);
-        restartGenerativeArt();
-
         const localTime = document.getElementById("local-time");
         const visitorLocation = document.getElementById("visitor-location");
         const visitorTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
