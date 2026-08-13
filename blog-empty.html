@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>blog — scene i</title>
+    <style>
+        * { box-sizing: border-box; }
+        html, body { margin: 0; min-height: 100%; }
+        body { background: #fff; color: #000; font-family: "Times New Roman", Times, serif; }
+        .site-home-i { position: fixed; top: 18px; left: 50%; z-index: 2; color: #000; font-size: 18px; line-height: 1; text-decoration: none; transform: translateX(-50%); }
+        .site-home-i:hover, .site-home-i:focus-visible { color: #fff; background: #000; text-decoration: none; }
+        .site-home-i:focus-visible { outline: 1px solid #000; outline-offset: 4px; }
+        main { width: min(100% - 48px, 520px); margin: 0 auto; padding: 19vh 0 64px; }
+        h1 { margin: 0 0 42px; font-size: 14px; font-weight: 400; line-height: 1; text-align: center; text-transform: lowercase; }
+        .empty-state { margin: 0 auto; max-width: 250px; color: #555; font-size: clamp(12px, 1.2vw, 14px); line-height: 1.25; text-align: center; text-transform: lowercase; }
+        .copyright { position: fixed; right: 18px; bottom: 18px; margin: 0; font-size: 11px; line-height: 1; }
+        @media (max-width: 480px) { main { width: min(100% - 36px, 520px); padding-top: 16vh; } }
+    </style>
+</head>
+<body>
+    <a class="site-home-i" href="index.html" aria-label="Back to home">i</a>
+    <main>
+        <h1>blog</h1>
+        <p class="empty-state">there are no posts here yet. please check back soon.</p>
+    </main>
+    <footer class="copyright">&copy; 2026</footer>
+</body>
+</html>
