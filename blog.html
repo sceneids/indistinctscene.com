@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>blog — scene i</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            background: #fff;
+            color: #000;
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        .site-home-i {
+            position: fixed;
+            top: 18px;
+            left: 50%;
+            z-index: 2;
+            color: #000;
+            font-size: 18px;
+            line-height: 1;
+            text-decoration: none;
+            text-transform: lowercase;
+            transform: translateX(-50%);
+        }
+
+        .site-home-i:hover,
+        .site-home-i:focus-visible,
+        .entry:hover .entry-title,
+        .entry:focus-visible .entry-title {
+            color: #fff;
+            background: #000;
+            text-decoration: none;
+        }
+
+        .site-home-i:focus-visible,
+        .entry:focus-visible {
+            outline: 1px solid #000;
+            outline-offset: 4px;
+        }
+
+        main {
+            width: min(100% - 48px, 520px);
+            margin: 0 auto;
+            padding: 19vh 0 64px;
+        }
+
+        h1 {
+            margin: 0 0 42px;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1;
+            text-align: center;
+            text-transform: lowercase;
+        }
+
+        .entry {
+            display: grid;
+            grid-template-columns: 74px 1fr;
+            column-gap: 20px;
+            padding: 16px 0 18px;
+            border-top: 1px solid #000;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .entry:last-child {
+            border-bottom: 1px solid #000;
+        }
+
+        time {
+            color: #777;
+            font-size: 11px;
+            line-height: 1.2;
+        }
+
+        .entry-title,
+        .entry-copy {
+            display: block;
+            font-size: clamp(13px, 1.25vw, 15px);
+            font-weight: 400;
+            line-height: 1.15;
+            text-transform: lowercase;
+        }
+
+        .entry-copy {
+            margin-top: 5px;
+            color: #555;
+            font-size: 12px;
+        }
+
+        .copyright {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            margin: 0;
+            font-size: 11px;
+            line-height: 1;
+        }
+
+        @media (max-width: 480px) {
+            main {
+                width: min(100% - 36px, 520px);
+                padding-top: 16vh;
+            }
+
+            .entry {
+                grid-template-columns: 58px 1fr;
+                column-gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a class="site-home-i" href="index.html" aria-label="Back to home">i</a>
+
+    <main>
+        <h1>blog</h1>
+
+        <a class="entry" href="#notes-on-light">
+            <time datetime="2026-08-13">13.08.26</time>
+            <span>
+                <span class="entry-title">notes on light</span>
+                <span class="entry-copy">a soft edge, a room with no beginning, the last blue hour.</span>
+            </span>
+        </a>
+
+        <a class="entry" href="#small-archives">
+            <time datetime="2026-07-29">29.07.26</time>
+            <span>
+                <span class="entry-title">small archives</span>
+                <span class="entry-copy">receipts, folded maps, images that almost remember themselves.</span>
+            </span>
+        </a>
+
+        <a class="entry" href="#after-the-rain">
+            <time datetime="2026-07-11">11.07.26</time>
+            <span>
+                <span class="entry-title">after the rain</span>
+                <span class="entry-copy">a brief inventory of wet pavement, open windows, and quiet.</span>
+            </span>
+        </a>
+    </main>
+
+    <footer class="copyright">&copy; 2026</footer>
+</body>
+</html>

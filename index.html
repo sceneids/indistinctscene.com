@@ -91,15 +91,19 @@
         }
 
         .orbit-item.mixes {
-            transform: rotate(0deg);
+            transform: rotate(45deg);
         }
 
         .orbit-item.consume {
-            transform: rotate(120deg);
+            transform: rotate(135deg);
         }
 
         .orbit-item.contact {
-            transform: rotate(240deg);
+            transform: rotate(225deg);
+        }
+
+        .orbit-item.blog {
+            transform: rotate(315deg);
         }
 
         .orbit-link {
@@ -111,15 +115,19 @@
             text-decoration: none;
             text-transform: lowercase;
             white-space: nowrap;
-            transform: translateX(var(--radius)) rotate(0deg);
+            transform: translateX(var(--radius)) rotate(-45deg);
         }
 
         .orbit-item.consume .orbit-link {
-            transform: translateX(var(--radius)) rotate(-120deg);
+            transform: translateX(var(--radius)) rotate(-135deg);
         }
 
         .orbit-item.contact .orbit-link {
-            transform: translateX(var(--radius)) rotate(-240deg);
+            transform: translateX(var(--radius)) rotate(-225deg);
+        }
+
+        .orbit-item.blog .orbit-link {
+            transform: translateX(var(--radius)) rotate(-315deg);
         }
 
         .copyright {
@@ -163,6 +171,10 @@
 
     <div class="orbit-item contact">
         <a class="orbit-link" href="contact.html">contact</a>
+    </div>
+
+    <div class="orbit-item blog">
+        <a class="orbit-link" href="blog.html">blog</a>
     </div>
 
     <footer class="copyright">&copy; 2026</footer>
