@@ -22,7 +22,7 @@
             font-family: "Times New Roman", Times, serif;
         }
 
-        #generative-art {
+        #lotus-art {
             position: fixed;
             inset: 0;
             z-index: 0;
@@ -153,7 +153,7 @@
     </style>
 </head>
 <body>
-    <canvas id="generative-art" aria-hidden="true"></canvas>
+    <canvas id="lotus-art" aria-hidden="true"></canvas>
 
     <div class="time-location" aria-label="Local time and location">
         <time class="local-time" id="local-time"></time>
@@ -179,69 +179,139 @@
     <footer class="copyright">&copy; 2026</footer>
 
     <script>
-        const artCanvas = document.getElementById("generative-art");
-        const artContext = artCanvas.getContext("2d");
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        let artTime = 0;
-        let artFrame;
+        const lotusCanvas = document.getElementById("lotus-art");
+        const lotusContext = lotusCanvas.getContext("2d");
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const bloomDuration = 6200;
+        let bloomStart;
+        let bloomFrame;
+        let bloomComplete = false;
 
-        function sizeArtCanvas() {
-            const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
-            artCanvas.width = Math.round(window.innerWidth * pixelRatio);
-            artCanvas.height = Math.round(window.innerHeight * pixelRatio);
-            artContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        const petals = [
+            { angle: -68, length: 112, width: 48, delay: 0.04, baseX: -5, baseY: 5 },
+            { angle: 68, length: 112, width: 48, delay: 0.08, baseX: 5, baseY: 5 },
+            { angle: -48, length: 145, width: 56, delay: 0.13, baseX: -3, baseY: 2 },
+            { angle: 48, length: 145, width: 56, delay: 0.18, baseX: 3, baseY: 2 },
+            { angle: -28, length: 172, width: 60, delay: 0.24, baseX: -2, baseY: 0 },
+            { angle: 28, length: 172, width: 60, delay: 0.30, baseX: 2, baseY: 0 },
+            { angle: 0, length: 190, width: 66, delay: 0.36, baseX: 0, baseY: -2 },
+            { angle: -57, length: 94, width: 55, delay: 0.42, baseX: -4, baseY: -2 },
+            { angle: 57, length: 94, width: 55, delay: 0.47, baseX: 4, baseY: -2 },
+            { angle: -34, length: 128, width: 55, delay: 0.52, baseX: -2, baseY: -4 },
+            { angle: 34, length: 128, width: 55, delay: 0.57, baseX: 2, baseY: -4 },
+            { angle: -14, length: 150, width: 50, delay: 0.62, baseX: -1, baseY: -6 },
+            { angle: 14, length: 150, width: 50, delay: 0.67, baseX: 1, baseY: -6 },
+            { angle: 0, length: 126, width: 44, delay: 0.73, baseX: 0, baseY: -8 }
+        ];
+
+        function easeOutCubic(value) {
+            return 1 - Math.pow(1 - value, 3);
         }
 
-        function drawGenerativeArt(frameTime = 0) {
+        function easeInOutCubic(value) {
+            return value < 0.5 ? 4 * value * value * value : 1 - Math.pow(-2 * value + 2, 3) / 2;
+        }
+
+        function sizeLotusCanvas() {
+            const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+            lotusCanvas.width = Math.round(window.innerWidth * pixelRatio);
+            lotusCanvas.height = Math.round(window.innerHeight * pixelRatio);
+            lotusContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        }
+
+        function drawPetal(petal, progress) {
+            if (progress <= 0) return;
+            const growth = easeOutCubic(progress);
+            const length = petal.length * (0.12 + growth * 0.88);
+            const width = petal.width * (0.18 + growth * 0.82);
+            lotusContext.save();
+            lotusContext.translate(petal.baseX, petal.baseY);
+            lotusContext.rotate(petal.angle * growth * Math.PI / 180);
+            lotusContext.beginPath();
+            lotusContext.moveTo(0, 5);
+            lotusContext.bezierCurveTo(-width * 0.68, -length * 0.27, -width * 0.58, -length * 0.72, 0, -length);
+            lotusContext.bezierCurveTo(width * 0.58, -length * 0.72, width * 0.68, -length * 0.27, 0, 5);
+            lotusContext.closePath();
+            lotusContext.fillStyle = "#fff";
+            lotusContext.fill();
+            lotusContext.strokeStyle = "#000";
+            lotusContext.lineWidth = 1.45;
+            lotusContext.lineJoin = "round";
+            lotusContext.stroke();
+            lotusContext.beginPath();
+            lotusContext.moveTo(0, 2);
+            lotusContext.bezierCurveTo(-width * 0.08, -length * 0.35, width * 0.06, -length * 0.68, 0, -length * 0.94);
+            lotusContext.strokeStyle = "rgba(0, 0, 0, 0.38)";
+            lotusContext.lineWidth = 0.7;
+            lotusContext.stroke();
+            lotusContext.restore();
+        }
+
+        function drawLotus(frameTime = 0) {
+            if (bloomStart === undefined) bloomStart = frameTime;
             const width = window.innerWidth;
             const height = window.innerHeight;
-            const scale = Math.min(width, height) / 470;
-            const swimTime = frameTime / 1000;
-            const swimX = Math.sin(swimTime * 0.24) * width * 0.22
-                + Math.sin(swimTime * 0.11) * width * 0.06;
-            const swimY = Math.cos(swimTime * 0.19) * height * 0.16
-                + Math.sin(swimTime * 0.13) * height * 0.05;
-            const originX = width / 2 - 200 * scale + swimX;
-            // The sketch's plotted mass sits low in its original 400px coordinate space.
-            const originY = height / 2 - 330 * scale + swimY;
-
-            artContext.clearRect(0, 0, width, height);
-            artContext.fillStyle = "rgba(0, 0, 0, 0.48)";
-
-            for (let i = 10000; i > 0; i -= 1) {
-                const y = i / 235;
-                const k = (4 + Math.cos(i / 9 - artTime * 2)) * Math.cos(i / 35);
-                const e = y / 7 - 13;
-                const d = Math.hypot(k, e);
-                const q = 2 * Math.sin(k * 3)
-                    - y / 35 * k * (9 + k * Math.sin(Math.cos(e) * 9 - d * 2 + artTime));
-                const c = d - artTime;
-                const x = q + 40 * Math.cos(c) + 200;
-                const pointY = q * Math.sin(c) + d * 35;
-
-                artContext.fillRect(
-                    originX + x * scale,
-                    originY + pointY * scale,
-                    Math.max(0.7, scale * 0.75),
-                    Math.max(0.7, scale * 0.75)
-                );
+            const rawProgress = reducedMotion.matches ? 1 : Math.min((frameTime - bloomStart) / bloomDuration, 1);
+            const travel = easeInOutCubic(rawProgress);
+            const startX = width + Math.min(width, height) * 0.23;
+            const startY = height + Math.min(width, height) * 0.22;
+            const endX = width * (width <= 650 ? 0.23 : 0.15);
+            const endY = height * (width <= 650 ? 0.21 : 0.28);
+            const x = startX + (endX - startX) * travel;
+            const y = startY + (endY - startY) * travel;
+            const scale = width <= 650
+                ? Math.max(0.44, Math.min(0.58, Math.min(width, height) / 760))
+                : Math.max(0.54, Math.min(1.22, Math.min(width, height) / 720));
+            lotusContext.clearRect(0, 0, width, height);
+            lotusContext.save();
+            lotusContext.translate(x, y);
+            lotusContext.rotate((1 - travel) * 11 * Math.PI / 180);
+            lotusContext.scale(scale, scale);
+            petals.forEach((petal) => {
+                drawPetal(petal, Math.max(0, Math.min((rawProgress - petal.delay) / 0.23, 1)));
+            });
+            const baseProgress = Math.max(0, Math.min((rawProgress - 0.63) / 0.24, 1));
+            if (baseProgress > 0) {
+                const baseWidth = 151 * easeOutCubic(baseProgress);
+                lotusContext.beginPath();
+                lotusContext.moveTo(-baseWidth, -2);
+                lotusContext.bezierCurveTo(-baseWidth * 0.68, 52, baseWidth * 0.68, 52, baseWidth, -2);
+                lotusContext.bezierCurveTo(baseWidth * 0.56, 75, -baseWidth * 0.56, 75, -baseWidth, -2);
+                lotusContext.closePath();
+                lotusContext.fillStyle = "#fff";
+                lotusContext.fill();
+                lotusContext.strokeStyle = "#000";
+                lotusContext.lineWidth = 1.45;
+                lotusContext.stroke();
+                [-0.66, -0.33, 0, 0.33, 0.66].forEach((position) => {
+                    lotusContext.beginPath();
+                    lotusContext.moveTo(position * baseWidth, 12);
+                    lotusContext.quadraticCurveTo(position * baseWidth * 0.45, 43, 0, 55);
+                    lotusContext.strokeStyle = "rgba(0, 0, 0, 0.32)";
+                    lotusContext.lineWidth = 0.65;
+                    lotusContext.stroke();
+                });
             }
+            lotusContext.restore();
+            if (rawProgress < 1) bloomFrame = requestAnimationFrame(drawLotus);
+            else bloomComplete = true;
+        }
 
-            if (!reduceMotion.matches) {
-                artTime += Math.PI / 80;
-                artFrame = requestAnimationFrame(drawGenerativeArt);
+        function restartLotus() {
+            cancelAnimationFrame(bloomFrame);
+            sizeLotusCanvas();
+            if (bloomComplete || reducedMotion.matches) {
+                bloomStart = 0;
+                drawLotus(bloomDuration);
+            } else {
+                bloomStart = undefined;
+                bloomFrame = requestAnimationFrame(drawLotus);
             }
         }
 
-        function restartGenerativeArt() {
-            cancelAnimationFrame(artFrame);
-            sizeArtCanvas();
-            drawGenerativeArt();
-        }
-
-        window.addEventListener("resize", restartGenerativeArt);
-        reduceMotion.addEventListener("change", restartGenerativeArt);
-        restartGenerativeArt();
+        window.addEventListener("resize", restartLotus);
+        reducedMotion.addEventListener("change", restartLotus);
+        restartLotus();
 
         const localTime = document.getElementById("local-time");
         const visitorLocation = document.getElementById("visitor-location");
