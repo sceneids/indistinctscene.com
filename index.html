@@ -111,7 +111,7 @@
             top: calc(50% + var(--radius));
         }
 
-        .orbit-item.blog {
+        .orbit-item.archive {
             left: calc(50% - var(--radius));
         }
 
@@ -141,48 +141,6 @@
             transform: translateX(-50%);
         }
 
-        .flying-circle {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 3;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #000;
-            pointer-events: none;
-            animation: fly 8s ease-in-out infinite;
-        }
-
-        @keyframes fly {
-            0% {
-                transform: translate(8vw, 12vh);
-            }
-
-            25% {
-                transform: translate(78vw, 22vh);
-            }
-
-            50% {
-                transform: translate(62vw, 72vh);
-            }
-
-            75% {
-                transform: translate(12vw, 64vh);
-            }
-
-            100% {
-                transform: translate(8vw, 12vh);
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .flying-circle {
-                animation: none;
-                transform: translate(8vw, 12vh);
-            }
-        }
-
         @media (max-width: 650px) {
             .time-location {
                 left: auto;
@@ -194,8 +152,6 @@
     </style>
 </head>
 <body>
-    <div class="flying-circle" aria-hidden="true"></div>
-
     <div class="time-location" aria-label="24-hour local time and approximate location">
         <time class="local-time" id="local-time"></time>
         <span id="visitor-location"></span>
@@ -217,8 +173,8 @@
         <a class="orbit-link" href="contact.html">contact</a>
     </div>
 
-    <div class="orbit-item blog">
-        <a class="orbit-link" href="blog-empty.html">blog</a>
+    <div class="orbit-item archive">
+        <a class="orbit-link" href="archive.html">archive</a>
     </div>
 
     <footer class="copyright">&copy; 2026</footer>
