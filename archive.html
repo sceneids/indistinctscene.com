@@ -32,14 +32,12 @@
             text-decoration: none;
             text-transform: lowercase;
             transform: translateX(-50%);
-            mix-blend-mode: difference;
         }
 
         .site-home-i:hover,
         .site-home-i:focus-visible {
             color: #fff;
             background: #000;
-            mix-blend-mode: normal;
             text-decoration: none;
         }
 
@@ -50,10 +48,11 @@
 
         .photos {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(12, 1fr);
             align-items: start;
-            gap: 16px;
-            padding: 16px;
+            column-gap: clamp(16px, 2vw, 28px);
+            row-gap: clamp(20px, 2.4vh, 32px);
+            padding: 6vh 4vw 10vh;
         }
 
         .spot {
@@ -67,17 +66,36 @@
             height: auto;
         }
 
+        .c1-6 { grid-column: 1 / span 6; }
+        .c1-5 { grid-column: 1 / span 5; }
+        .c1-4 { grid-column: 1 / span 4; }
+        .c5-4 { grid-column: 5 / span 4; }
+        .c8-5 { grid-column: 8 / span 5; }
+        .c9-4 { grid-column: 9 / span 4; }
+
         @media (max-width: 800px) {
             .photos {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-                padding: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 3.5vh;
+                padding: 7vh 6vw 10vh;
             }
-        }
 
-        @media (max-width: 520px) {
-            .photos {
-                grid-template-columns: 1fr;
+            .spot {
+                width: min(86vw, 540px);
+                grid-column: auto;
+            }
+
+            .spot.port {
+                width: min(64vw, 360px);
+            }
+
+            .spot:nth-child(odd) {
+                align-self: flex-start;
+            }
+
+            .spot:nth-child(even) {
+                align-self: flex-end;
             }
         }
     </style>
@@ -85,67 +103,67 @@
 <body>
     <a class="site-home-i" href="index.html" aria-label="Back to home">i</a>
     <main class="photos" aria-label="archive">
-        <figure class="spot">
+        <figure class="spot c1-6">
             <img src="archive-photos/000078430009.jpg" alt="" width="1800" height="1193" />
         </figure>
-        <figure class="spot">
-            <img src="archive-photos/000078430018.jpg" alt="" width="1800" height="1193" />
+        <figure class="spot port c9-4">
+            <img src="archive-photos/000078430011.jpg" alt="" width="1193" height="1800" />
         </figure>
-        <figure class="spot">
-            <img src="archive-photos/000078430019.jpg" alt="" width="1800" height="1193" />
+        <figure class="spot c1-5">
+            <img src="archive-photos/000078430018.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
-            <img src="archive-photos/000078430011.jpg" alt="" width="1193" height="1800" loading="lazy" />
+        <figure class="spot c8-5">
+            <img src="archive-photos/000078430019.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot port c1-4">
             <img src="archive-photos/000078430022.jpg" alt="" width="1193" height="1800" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c8-5">
             <img src="archive-photos/000078430023.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c1-5">
             <img src="archive-photos/000078430025.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c8-5">
             <img src="archive-photos/000078430026.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c1-5">
             <img src="archive-photos/000078430027.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c8-5">
             <img src="archive-photos/000078450005.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c1-6">
             <img src="archive-photos/000078450007.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c8-5">
             <img src="archive-photos/000078450012.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c1-5">
             <img src="archive-photos/000078450013.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c8-5">
             <img src="archive-photos/000078450015.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c1-5">
             <img src="archive-photos/000078450016.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c8-5">
             <img src="archive-photos/000078450019.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c1-6">
             <img src="archive-photos/000078450020.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c8-5">
             <img src="archive-photos/000078450029.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c1-5">
             <img src="archive-photos/000095670002.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot c8-5">
             <img src="archive-photos/000095670014.jpg" alt="" width="1800" height="1193" loading="lazy" />
         </figure>
-        <figure class="spot">
+        <figure class="spot port c5-4">
             <img src="archive-photos/000095670016.jpg" alt="" width="1193" height="1800" loading="lazy" />
         </figure>
     </main>
