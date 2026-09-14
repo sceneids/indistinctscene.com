@@ -32,7 +32,6 @@
             text-decoration: none;
             text-transform: lowercase;
             transform: translateX(-50%);
-            mix-blend-mode: difference;
         }
 
         .site-home-i:hover,
@@ -49,27 +48,107 @@
         }
 
         .photos {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            padding: 16vh 5vw 28vh;
         }
 
-        .photos img {
+        .spot {
+            margin: 0;
+        }
+
+        .spot img {
             display: block;
             width: 100%;
             height: auto;
         }
 
-        @media (max-width: 800px) {
-            .photos {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        .left {
+            align-self: flex-start;
         }
 
-        @media (max-width: 520px) {
+        .right {
+            align-self: flex-end;
+        }
+
+        .mid {
+            align-self: center;
+        }
+
+        .mid-left {
+            align-self: flex-start;
+            margin-left: 14vw;
+        }
+
+        .mid-right {
+            align-self: flex-end;
+            margin-right: 12vw;
+        }
+
+        .landscape.lg {
+            width: min(46vw, 600px);
+        }
+
+        .landscape.md {
+            width: min(36vw, 460px);
+        }
+
+        .landscape.sm {
+            width: min(28vw, 360px);
+        }
+
+        .portrait {
+            width: min(22vw, 300px);
+        }
+
+        .space-xl {
+            margin-bottom: 28vh;
+        }
+
+        .space-lg {
+            margin-bottom: 22vh;
+        }
+
+        .space-md {
+            margin-bottom: 16vh;
+        }
+
+        .space-sm {
+            margin-bottom: 10vh;
+        }
+
+        @media (max-width: 800px) {
             .photos {
-                grid-template-columns: 1fr;
+                padding: 14vh 7vw 22vh;
+            }
+
+            .landscape.lg,
+            .landscape.md,
+            .landscape.sm {
+                width: min(78vw, 520px);
+            }
+
+            .portrait {
+                width: min(56vw, 320px);
+            }
+
+            .mid-left,
+            .mid-right {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .space-xl {
+                margin-bottom: 18vh;
+            }
+
+            .space-lg {
+                margin-bottom: 14vh;
+            }
+
+            .space-md,
+            .space-sm {
+                margin-bottom: 12vh;
             }
         }
     </style>
@@ -77,27 +156,69 @@
 <body>
     <a class="site-home-i" href="index.html" aria-label="Back to home">i</a>
     <main class="photos" aria-label="archive">
-        <img src="archive-photos/000078430009.jpg" alt="" width="1800" height="1193" />
-        <img src="archive-photos/000078430011.jpg" alt="" width="1800" height="1193" />
-        <img src="archive-photos/000078430018.jpg" alt="" width="1800" height="1193" />
-        <img src="archive-photos/000078430019.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078430022.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078430023.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078430025.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078430026.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078430027.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078450005.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078450007.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078450012.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078450013.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078450015.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078450016.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078450019.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078450020.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000078450029.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000095670002.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000095670014.jpg" alt="" width="1800" height="1193" loading="lazy" />
-        <img src="archive-photos/000095670016.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        <figure class="spot left landscape lg space-xl">
+            <img src="archive-photos/000078430009.jpg" alt="" width="1800" height="1193" />
+        </figure>
+        <figure class="spot right portrait space-lg">
+            <img src="archive-photos/000078430011.jpg" alt="" width="1193" height="1800" />
+        </figure>
+        <figure class="spot mid-left landscape md space-xl">
+            <img src="archive-photos/000078430018.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot right landscape md space-lg">
+            <img src="archive-photos/000078430019.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot left portrait space-xl">
+            <img src="archive-photos/000078430022.jpg" alt="" width="1193" height="1800" loading="lazy" />
+        </figure>
+        <figure class="spot mid-right landscape sm space-md">
+            <img src="archive-photos/000078430023.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot left landscape md space-xl">
+            <img src="archive-photos/000078430025.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot right landscape md space-lg">
+            <img src="archive-photos/000078430026.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot mid landscape sm space-xl">
+            <img src="archive-photos/000078430027.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot left landscape lg space-lg">
+            <img src="archive-photos/000078450005.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot right landscape md space-xl">
+            <img src="archive-photos/000078450007.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot mid-left landscape md space-lg">
+            <img src="archive-photos/000078450012.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot right landscape md space-xl">
+            <img src="archive-photos/000078450013.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot left landscape sm space-md">
+            <img src="archive-photos/000078450015.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot mid-right landscape md space-xl">
+            <img src="archive-photos/000078450016.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot left landscape md space-lg">
+            <img src="archive-photos/000078450019.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot right landscape lg space-xl">
+            <img src="archive-photos/000078450020.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot mid-left landscape md space-lg">
+            <img src="archive-photos/000078450029.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot right landscape sm space-xl">
+            <img src="archive-photos/000095670002.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot left landscape md space-lg">
+            <img src="archive-photos/000095670014.jpg" alt="" width="1800" height="1193" loading="lazy" />
+        </figure>
+        <figure class="spot right portrait space-sm">
+            <img src="archive-photos/000095670016.jpg" alt="" width="1193" height="1800" loading="lazy" />
+        </figure>
     </main>
 </body>
 </html>
