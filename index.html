@@ -77,7 +77,6 @@
 
         .orbit-item {
             --radius: clamp(86px, 12.5vw, 126px);
-            --diagonal: clamp(62px, 9vw, 90px);
             position: fixed;
             left: 50%;
             top: 50%;
@@ -99,11 +98,6 @@
 
         .orbit-item.consume {
             left: calc(50% + var(--radius));
-        }
-
-        .orbit-item.gallery {
-            left: calc(50% + var(--diagonal));
-            top: calc(50% - var(--diagonal));
         }
 
         .orbit-link {
@@ -162,10 +156,6 @@
 
     <div class="orbit-item archive">
         <a class="orbit-link" href="archive.html">archive</a>
-    </div>
-
-    <div class="orbit-item gallery">
-        <a class="orbit-link" href="gallery.html">gallery</a>
     </div>
 
     <footer class="copyright">&copy; 2026</footer>
