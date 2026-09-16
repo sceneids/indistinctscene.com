@@ -9,6 +9,7 @@
     <meta property="og:title" content="Indistinct Scene" />
     <meta property="og:url" content="https://indistinctscene.com/" />
     <link rel="canonical" href="https://indistinctscene.com/" />
+    <link rel="stylesheet" href="shared.css" />
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -20,21 +21,8 @@
         }
     </script>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            margin: 0;
-            min-height: 100%;
-        }
-
         body {
             overflow: hidden;
-            background: #fff;
-            color: #000;
-            font-family: "Times New Roman", Times, serif;
         }
 
         .time-location {
@@ -67,20 +55,14 @@
         }
 
         .center-i {
-            color: #000;
             display: grid;
             place-items: center;
             width: 44px;
             height: 44px;
             font-size: 34px;
             font-weight: 400;
-            line-height: 1;
-            text-decoration: none;
-            text-transform: lowercase;
         }
 
-        .center-i:hover,
-        .center-i:focus-visible,
         .orbit-link:hover,
         .orbit-link:focus-visible {
             color: #fff;
@@ -88,7 +70,6 @@
             text-decoration: none;
         }
 
-        .center-i:focus-visible,
         .orbit-link:focus-visible {
             outline: 1px solid #000;
             outline-offset: 4px;
@@ -96,6 +77,7 @@
 
         .orbit-item {
             --radius: clamp(86px, 12.5vw, 126px);
+            --diagonal: clamp(62px, 9vw, 90px);
             position: fixed;
             left: 50%;
             top: 50%;
@@ -117,6 +99,11 @@
 
         .orbit-item.consume {
             left: calc(50% + var(--radius));
+        }
+
+        .orbit-item.gallery {
+            left: calc(50% + var(--diagonal));
+            top: calc(50% - var(--diagonal));
         }
 
         .orbit-link {
@@ -175,6 +162,10 @@
 
     <div class="orbit-item archive">
         <a class="orbit-link" href="archive.html">archive</a>
+    </div>
+
+    <div class="orbit-item gallery">
+        <a class="orbit-link" href="gallery.html">gallery</a>
     </div>
 
     <footer class="copyright">&copy; 2026</footer>
@@ -251,5 +242,6 @@
         locateVisitorByIp();
         setInterval(updateLocalTime, 30000);
     </script>
+    <script src="router.js"></script>
 </body>
 </html>
