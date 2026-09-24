@@ -25,6 +25,14 @@
             overflow: hidden;
         }
 
+        .backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: url("mila.jpg") center / contain no-repeat;
+            pointer-events: none;
+        }
+
         .time-location {
             position: fixed;
             top: 18px;
@@ -133,6 +141,8 @@
     </style>
 </head>
 <body>
+    <div class="backdrop" aria-hidden="true"></div>
+
     <div class="time-location" aria-label="24-hour local time and approximate location">
         <time class="local-time" id="local-time"></time>
         <span id="visitor-location"></span>
