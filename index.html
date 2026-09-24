@@ -83,32 +83,63 @@
             outline-offset: 4px;
         }
 
-        .orbit-item {
+        .orbit {
             --radius: clamp(86px, 12.5vw, 126px);
+            --orbit-duration: 20s;
             position: fixed;
             left: 50%;
             top: 50%;
             z-index: 2;
+            width: 0;
+            height: 0;
+            animation: orbit-spin var(--orbit-duration) linear infinite;
+        }
+
+        .orbit-item {
+            position: absolute;
+            left: 0;
+            top: 0;
             transform: translate(-50%, -50%);
         }
 
         .orbit-item.contact {
-            top: calc(50% - var(--radius));
+            top: calc(-1 * var(--radius));
         }
 
         .orbit-item.mixes {
-            top: calc(50% + var(--radius));
+            top: var(--radius);
         }
 
         .orbit-item.archive {
-            left: calc(50% - var(--radius));
+            left: calc(-1 * var(--radius));
         }
 
         .orbit-item.consume {
-            left: calc(50% + var(--radius));
+            left: var(--radius);
+        }
+
+        .orbit:hover,
+        .orbit:focus-within,
+        .orbit:hover .orbit-link,
+        .orbit:focus-within .orbit-link {
+            animation-play-state: paused;
+        }
+
+        @keyframes orbit-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .orbit,
+            .orbit-link {
+                animation: none;
+            }
         }
 
         .orbit-link {
+            animation: orbit-spin var(--orbit-duration) linear infinite reverse;
             display: block;
             color: #000;
             font-size: clamp(14px, 1.35vw, 17px);
@@ -152,21 +183,23 @@
         <a class="center-i" href="index.html" aria-label="Indistinct Scene home">i</a>
     </main>
 
-    <div class="orbit-item mixes">
-        <a class="orbit-link" href="mixes.html">mixes</a>
-    </div>
+    <nav class="orbit" aria-label="Site sections">
+        <div class="orbit-item mixes">
+            <a class="orbit-link" href="mixes.html">mixes</a>
+        </div>
 
-    <div class="orbit-item consume">
-        <a class="orbit-link" href="consume.html">consume</a>
-    </div>
+        <div class="orbit-item consume">
+            <a class="orbit-link" href="consume.html">consume</a>
+        </div>
 
-    <div class="orbit-item contact">
-        <a class="orbit-link" href="contact.html">contact</a>
-    </div>
+        <div class="orbit-item contact">
+            <a class="orbit-link" href="contact.html">contact</a>
+        </div>
 
-    <div class="orbit-item archive">
-        <a class="orbit-link" href="archive.html">archive</a>
-    </div>
+        <div class="orbit-item archive">
+            <a class="orbit-link" href="archive.html">archive</a>
+        </div>
+    </nav>
 
     <footer class="copyright">&copy; 2026</footer>
 
