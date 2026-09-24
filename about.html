@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>about</title>
+    <link rel="stylesheet" href="shared.css" />
+    <style>
+        body {
+            font-weight: 300;
+        }
+
+        .site-home-i {
+            position: fixed;
+            left: 50%;
+            top: calc(50% - 52px);
+            z-index: 10;
+            transform: translate(-50%, -50%);
+        }
+
+        main {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            text-align: center;
+        }
+
+        p {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-width: 240px;
+            margin: 0;
+            font-size: clamp(11px, 1.1vw, 14px);
+            line-height: 1.2;
+            text-transform: lowercase;
+        }
+    </style>
+</head>
+<body>
+    <a class="site-home-i" href="index.html">i</a>
+
+    <main>
+        <p>
+            <span>indistinct scene</span>
+            <span>about text coming soon.</span>
+        </p>
+    </main>
+    <script src="router.js"></script>
+</body>
+</html>
