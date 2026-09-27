@@ -25,12 +25,16 @@
             overflow: hidden;
         }
 
-        .backdrop {
+        .scene {
+            --scene-width: min(100vw, calc(100vh * 790 / 1024));
             position: fixed;
-            inset: 0;
-            z-index: 0;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: var(--scene-width);
+            aspect-ratio: 790 / 1024;
             background: url("zebra.jpg") center / contain no-repeat;
-            pointer-events: none;
+            transform: translate(-50%, -50%);
         }
 
         .time-location {
@@ -108,9 +112,11 @@
             z-index: 2;
             display: grid;
             place-items: center;
+            pointer-events: none;
         }
 
         .center-i {
+            pointer-events: auto;
             display: grid;
             place-items: center;
             width: 44px;
@@ -119,83 +125,56 @@
             font-weight: 400;
         }
 
-        .orbit-link:hover,
-        .orbit-link:focus-visible {
-            color: #fff;
-            background: #000;
-            text-decoration: none;
-        }
-
-        .orbit-link:focus-visible {
-            outline: 1px solid #000;
-            outline-offset: 4px;
-        }
-
-        .orbit {
-            --radius: clamp(86px, 12.5vw, 126px);
-            --orbit-duration: 20s;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            z-index: 2;
-            width: 0;
-            height: 0;
-            animation: orbit-spin var(--orbit-duration) linear infinite;
-        }
-
-        .orbit-item {
-            position: absolute;
-            left: 0;
-            top: 0;
-            transform: translate(-50%, -50%);
-        }
-
-        .orbit-item.contact {
-            top: calc(-1 * var(--radius));
-        }
-
-        .orbit-item.mixes {
-            top: var(--radius);
-        }
-
-        .orbit-item.archive {
-            left: calc(-1 * var(--radius));
-        }
-
-        .orbit-item.consume {
-            left: var(--radius);
-        }
-
-        .orbit:hover,
-        .orbit:focus-within,
-        .orbit:hover .orbit-link,
-        .orbit:focus-within .orbit-link {
-            animation-play-state: paused;
-        }
-
-        @keyframes orbit-spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .orbit,
-            .orbit-link {
-                animation: none;
-            }
-        }
-
-        .orbit-link {
-            animation: orbit-spin var(--orbit-duration) linear infinite reverse;
-            display: block;
+        .section-link {
             color: #000;
-            font-size: clamp(14px, 1.35vw, 17px);
+            font-size: 17px;
             font-weight: 400;
             line-height: 1;
             text-decoration: none;
             text-transform: lowercase;
             white-space: nowrap;
+        }
+
+        .section-link:hover,
+        .section-link:focus-visible {
+            color: #fff;
+            background: #000;
+            text-decoration: none;
+        }
+
+        .section-link:focus-visible {
+            outline: 1px solid #000;
+            outline-offset: 4px;
+        }
+
+        /* Hexagon centres, as percentages of the 790x1024 zebra image. */
+        .scene .section-link {
+            position: absolute;
+            font-size: clamp(10px, calc(var(--scene-width) * 0.02), 17px);
+            transform: translate(-50%, -50%);
+        }
+
+        .scene .archive {
+            left: 45.6%;
+            top: 33.3%;
+        }
+
+        .scene .mixes {
+            left: 54.4%;
+            top: 45.1%;
+        }
+
+        .scene .consume {
+            left: 45.6%;
+            top: 57%;
+        }
+
+        .contact {
+            position: fixed;
+            left: 12px;
+            top: 50%;
+            z-index: 3;
+            transform: translateY(-50%);
         }
 
         .copyright {
@@ -220,8 +199,6 @@
     </style>
 </head>
 <body>
-    <div class="backdrop" aria-hidden="true"></div>
-
     <div class="time-location" aria-label="24-hour local time and approximate location">
         <span class="live-dot" aria-hidden="true"></span>
         <a class="about-link" href="about.html" aria-label="About">
@@ -239,22 +216,13 @@
         <a class="center-i" href="index.html" aria-label="Indistinct Scene home">i</a>
     </main>
 
-    <nav class="orbit" aria-label="Site sections">
-        <div class="orbit-item mixes">
-            <a class="orbit-link" href="mixes.html">mixes</a>
+    <nav aria-label="Site sections">
+        <div class="scene">
+            <a class="section-link archive" href="archive.html">archive</a>
+            <a class="section-link mixes" href="mixes.html">mixes</a>
+            <a class="section-link consume" href="consume.html">consume</a>
         </div>
-
-        <div class="orbit-item consume">
-            <a class="orbit-link" href="consume.html">consume</a>
-        </div>
-
-        <div class="orbit-item contact">
-            <a class="orbit-link" href="contact.html">contact</a>
-        </div>
-
-        <div class="orbit-item archive">
-            <a class="orbit-link" href="archive.html">archive</a>
-        </div>
+        <a class="section-link contact" href="contact.html">contact</a>
     </nav>
 
     <footer class="copyright">&copy; 2026</footer>
