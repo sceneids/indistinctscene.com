@@ -24,7 +24,7 @@
     const link = e.target.closest('a');
     if (!link) return;
     const href = link.getAttribute('href');
-    if (href && isInternal(href) && !href.startsWith('#') && href.endsWith('.html')) {
+    if (href && isInternal(href) && !href.startsWith('#') && (href.endsWith('.html') || href.startsWith('/'))) {
       const timeout = setTimeout(() => prefetchPage(href), prefetchDelay);
       link.addEventListener('mouseleave', () => clearTimeout(timeout), { once: true });
     }
