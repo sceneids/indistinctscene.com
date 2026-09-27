@@ -10,17 +10,11 @@
             font-weight: 300;
         }
 
-        .site-home-i {
-            position: fixed;
-            left: 50%;
-            top: calc(50% - 52px);
-            z-index: 10;
-            transform: translate(-50%, -50%);
-        }
-
         main {
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
+            gap: 28px;
             align-items: center;
             justify-content: center;
             padding: 24px;
@@ -54,9 +48,8 @@
     </style>
 </head>
 <body>
-    <a class="site-home-i" href="index.html">i</a>
-
     <main>
+        <a class="site-home-i" href="index.html">i</a>
         <p>
             <span>Thoughts rise to the surface slowly, like bubbles. (Sometimes it's as though you could see a thought, and idea, as an <span class="redacted" tabindex="0">indistinct</span> point far away on the horizon; and then it approaches with astonishing swiftness.)</span>
         </p>
