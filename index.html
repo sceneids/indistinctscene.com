@@ -53,7 +53,7 @@
 
         /* Lateral walk: each leg lifts a quarter-stride after the previous one. */
         .zebra-legs {
-            --stride: 3.2s;
+            --stride: 2.7s;
         }
 
         .zebra-legs .leg {
@@ -70,12 +70,12 @@
 
         .zebra-legs .hind-far,
         .zebra-legs .hind-near {
-            --swing: 6deg;
+            --swing: 7deg;
         }
 
         .zebra-legs .hind-far .shin,
         .zebra-legs .hind-near .shin {
-            --flex: -10deg;
+            --flex: -14deg;
         }
 
         /* In the photo this hoof rests on the other forefoot, so it barely lifts. */
@@ -84,9 +84,8 @@
         }
 
         .zebra-legs .fore-near .shin {
-            --flex: 4deg;
+            --flex: 5deg;
         }
-
         .zebra-legs .fore-far,
         .zebra-legs .fore-far .shin {
             animation-delay: calc(var(--stride) * -0.75);
