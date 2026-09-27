@@ -37,6 +37,20 @@
             line-height: 1.2;
             text-transform: lowercase;
         }
+
+        .redacted {
+            background: #000;
+            color: transparent;
+            cursor: default;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .redacted:hover,
+        .redacted:focus {
+            background: transparent;
+            color: inherit;
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -44,8 +58,7 @@
 
     <main>
         <p>
-            <span>indistinct scene</span>
-            <span>about text coming soon.</span>
+            <span>Thoughts rise to the surface slowly, like bubbles. (Sometimes it's as though you could see a thought, and idea, as an <span class="redacted" tabindex="0">indistinct</span> point far away on the horizon; and then it approaches with astonishing swiftness.)</span>
         </p>
     </main>
     <script src="router.js"></script>
