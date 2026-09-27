@@ -33,8 +33,112 @@
             z-index: 1;
             width: var(--scene-width);
             aspect-ratio: 790 / 1024;
-            background: url("zebra.jpg") center / contain no-repeat;
+            background: url("zebra-body.jpg") center / contain no-repeat;
             transform: translate(-50%, -50%);
+        }
+
+        .zebra-legs,
+        .zebra-legs .leg,
+        .zebra-legs .shin {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .zebra-legs img {
+            position: absolute;
+            height: auto;
+            user-select: none;
+        }
+
+        /* Lateral walk: each leg lifts a quarter-stride after the previous one. */
+        .zebra-legs {
+            --stride: 3.2s;
+        }
+
+        .zebra-legs .leg {
+            --swing: 4deg;
+            animation: zebra-thigh var(--stride) linear infinite;
+            will-change: transform;
+        }
+
+        .zebra-legs .shin {
+            --flex: 11deg;
+            animation: zebra-shin var(--stride) linear infinite;
+            will-change: transform;
+        }
+
+        .zebra-legs .hind-far,
+        .zebra-legs .hind-near {
+            --swing: 6deg;
+        }
+
+        .zebra-legs .hind-far .shin,
+        .zebra-legs .hind-near .shin {
+            --flex: -10deg;
+        }
+
+        /* In the photo this hoof rests on the other forefoot, so it barely lifts. */
+        .zebra-legs .fore-near {
+            --swing: 3deg;
+        }
+
+        .zebra-legs .fore-near .shin {
+            --flex: 4deg;
+        }
+
+        .zebra-legs .fore-far,
+        .zebra-legs .fore-far .shin {
+            animation-delay: calc(var(--stride) * -0.75);
+        }
+
+        .zebra-legs .hind-near,
+        .zebra-legs .hind-near .shin {
+            animation-delay: calc(var(--stride) * -0.5);
+        }
+
+        .zebra-legs .fore-near,
+        .zebra-legs .fore-near .shin {
+            animation-delay: calc(var(--stride) * -0.25);
+        }
+
+        @keyframes zebra-thigh {
+            0% {
+                transform: rotate(calc(-1 * var(--swing)));
+            }
+
+            62% {
+                transform: rotate(var(--swing));
+                animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1);
+            }
+
+            100% {
+                transform: rotate(calc(-1 * var(--swing)));
+            }
+        }
+
+        @keyframes zebra-shin {
+            0%,
+            58% {
+                transform: rotate(0deg);
+                animation-timing-function: cubic-bezier(0.3, 0, 0.4, 1);
+            }
+
+            80% {
+                transform: rotate(var(--flex));
+                animation-timing-function: cubic-bezier(0.5, 0, 0.6, 1);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .zebra-legs .leg,
+            .zebra-legs .shin {
+                animation: none;
+            }
         }
 
         .time-location {
@@ -218,6 +322,32 @@
 
     <nav aria-label="Site sections">
         <div class="scene">
+            <div class="zebra-legs" aria-hidden="true">
+                <div class="leg hind-far" style="transform-origin: 27.089% 50.977%;">
+                    <div class="shin" style="transform-origin: 24.557% 54.492%;">
+                        <img class="lower" src="zebra-hind-far-lower.png" alt="" style="left: 20.886%; top: 52.93%; width: 7.722%;" />
+                    </div>
+                    <img class="upper" src="zebra-hind-far-upper.png" alt="" style="left: 22.911%; top: 51.074%; width: 9.114%;" />
+                </div>
+                <div class="leg fore-far" style="transform-origin: 56.456% 53.125%;">
+                    <div class="shin" style="transform-origin: 56.582% 57.617%;">
+                        <img class="lower" src="zebra-fore-far-lower.png" alt="" style="left: 55.19%; top: 56.348%; width: 5.443%;" />
+                    </div>
+                    <img class="upper" src="zebra-fore-far-upper.png" alt="" style="left: 55.316%; top: 53.223%; width: 4.43%;" />
+                </div>
+                <div class="leg hind-near" style="transform-origin: 33.924% 51.953%;">
+                    <div class="shin" style="transform-origin: 34.43% 57.422%;">
+                        <img class="lower" src="zebra-hind-near-lower.png" alt="" style="left: 32.025%; top: 55.664%; width: 11.646%;" />
+                    </div>
+                    <img class="upper" src="zebra-hind-near-upper.png" alt="" style="left: 30.759%; top: 52.051%; width: 5.949%;" />
+                </div>
+                <div class="leg fore-near" style="transform-origin: 60% 52.93%;">
+                    <div class="shin" style="transform-origin: 61.266% 56.641%;">
+                        <img class="lower" src="zebra-fore-near-lower.png" alt="" style="left: 57.468%; top: 54.492%; width: 5.57%;" />
+                    </div>
+                    <img class="upper" src="zebra-fore-near-upper.png" alt="" style="left: 58.481%; top: 53.027%; width: 4.557%;" />
+                </div>
+            </div>
             <a class="section-link archive" href="archive.html">archive</a>
             <a class="section-link mixes" href="mixes.html">mixes</a>
             <a class="section-link consume" href="consume.html">consume</a>
