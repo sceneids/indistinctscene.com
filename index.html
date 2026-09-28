@@ -25,121 +25,6 @@
             overflow: hidden;
         }
 
-        .scene {
-            --scene-width: min(100vw, calc(100vh * 790 / 1024));
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            z-index: 1;
-            width: var(--scene-width);
-            aspect-ratio: 790 / 1024;
-            background: url("zebra-body.jpg") center / contain no-repeat;
-            transform: translate(-50%, -50%);
-        }
-
-        .zebra-legs,
-        .zebra-legs .leg,
-        .zebra-legs .shin {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .zebra-legs img {
-            position: absolute;
-            height: auto;
-            user-select: none;
-        }
-
-        /* Lateral walk: each leg lifts a quarter-stride after the previous one. */
-        .zebra-legs {
-            --stride: 2.7s;
-        }
-
-        .zebra-legs .leg {
-            --swing: 4deg;
-            animation: zebra-thigh var(--stride) linear infinite;
-            will-change: transform;
-        }
-
-        .zebra-legs .shin {
-            --flex: 11deg;
-            animation: zebra-shin var(--stride) linear infinite;
-            will-change: transform;
-        }
-
-        .zebra-legs .hind-far,
-        .zebra-legs .hind-near {
-            --swing: 7deg;
-        }
-
-        .zebra-legs .hind-far .shin,
-        .zebra-legs .hind-near .shin {
-            --flex: -14deg;
-        }
-
-        /* In the photo this hoof rests on the other forefoot, so it barely lifts. */
-        .zebra-legs .fore-near {
-            --swing: 3deg;
-        }
-
-        .zebra-legs .fore-near .shin {
-            --flex: 5deg;
-        }
-        .zebra-legs .fore-far,
-        .zebra-legs .fore-far .shin {
-            animation-delay: calc(var(--stride) * -0.75);
-        }
-
-        .zebra-legs .hind-near,
-        .zebra-legs .hind-near .shin {
-            animation-delay: calc(var(--stride) * -0.5);
-        }
-
-        .zebra-legs .fore-near,
-        .zebra-legs .fore-near .shin {
-            animation-delay: calc(var(--stride) * -0.25);
-        }
-
-        @keyframes zebra-thigh {
-            0% {
-                transform: rotate(calc(-1 * var(--swing)));
-            }
-
-            62% {
-                transform: rotate(var(--swing));
-                animation-timing-function: cubic-bezier(0.45, 0, 0.35, 1);
-            }
-
-            100% {
-                transform: rotate(calc(-1 * var(--swing)));
-            }
-        }
-
-        @keyframes zebra-shin {
-            0%,
-            58% {
-                transform: rotate(0deg);
-                animation-timing-function: cubic-bezier(0.3, 0, 0.4, 1);
-            }
-
-            80% {
-                transform: rotate(var(--flex));
-                animation-timing-function: cubic-bezier(0.5, 0, 0.6, 1);
-            }
-
-            100% {
-                transform: rotate(0deg);
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .zebra-legs .leg,
-            .zebra-legs .shin {
-                animation: none;
-            }
-        }
-
         .time-location {
             position: fixed;
             top: 18px;
@@ -215,11 +100,9 @@
             z-index: 2;
             display: grid;
             place-items: center;
-            pointer-events: none;
         }
 
         .center-i {
-            pointer-events: auto;
             display: grid;
             place-items: center;
             width: 44px;
@@ -228,9 +111,35 @@
             font-weight: 400;
         }
 
+        .orbit-item {
+            --radius: clamp(86px, 12.5vw, 126px);
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+        }
+
+        .orbit-item.contact {
+            top: calc(50% - var(--radius));
+        }
+
+        .orbit-item.mixes {
+            top: calc(50% + var(--radius));
+        }
+
+        .orbit-item.archive {
+            left: calc(50% - var(--radius));
+        }
+
+        .orbit-item.consume {
+            left: calc(50% + var(--radius));
+        }
+
         .section-link {
+            display: block;
             color: #000;
-            font-size: 17px;
+            font-size: clamp(14px, 1.35vw, 17px);
             font-weight: 400;
             line-height: 1;
             text-decoration: none;
@@ -250,34 +159,14 @@
             outline-offset: 4px;
         }
 
-        /* Hexagon centres, as percentages of the 790x1024 zebra image. */
-        .scene .section-link {
-            position: absolute;
-            font-size: clamp(10px, calc(var(--scene-width) * 0.02), 17px);
-            transform: translate(-50%, -50%);
-        }
-
-        .scene .archive {
-            left: 45.6%;
-            top: 33.3%;
-        }
-
-        .scene .mixes {
-            left: 54.4%;
-            top: 45.1%;
-        }
-
-        .scene .consume {
-            left: 45.6%;
-            top: 57%;
-        }
-
-        .contact {
+        .corner-zebra {
             position: fixed;
-            left: 12px;
-            top: 50%;
-            z-index: 3;
-            transform: translateY(-50%);
+            right: 16px;
+            bottom: 16px;
+            z-index: 1;
+            width: auto;
+            height: 44px;
+            pointer-events: none;
         }
 
         .copyright {
@@ -320,39 +209,24 @@
     </main>
 
     <nav aria-label="Site sections">
-        <div class="scene">
-            <div class="zebra-legs" aria-hidden="true">
-                <div class="leg hind-far" style="transform-origin: 27.089% 50.977%;">
-                    <div class="shin" style="transform-origin: 24.557% 54.492%;">
-                        <img class="lower" src="zebra-hind-far-lower.png" alt="" style="left: 20.886%; top: 52.93%; width: 7.722%;" />
-                    </div>
-                    <img class="upper" src="zebra-hind-far-upper.png" alt="" style="left: 22.911%; top: 51.074%; width: 9.114%;" />
-                </div>
-                <div class="leg fore-far" style="transform-origin: 56.456% 53.125%;">
-                    <div class="shin" style="transform-origin: 56.582% 57.617%;">
-                        <img class="lower" src="zebra-fore-far-lower.png" alt="" style="left: 55.19%; top: 56.348%; width: 5.443%;" />
-                    </div>
-                    <img class="upper" src="zebra-fore-far-upper.png" alt="" style="left: 55.316%; top: 53.223%; width: 4.43%;" />
-                </div>
-                <div class="leg hind-near" style="transform-origin: 33.924% 51.953%;">
-                    <div class="shin" style="transform-origin: 34.43% 57.422%;">
-                        <img class="lower" src="zebra-hind-near-lower.png" alt="" style="left: 32.025%; top: 55.664%; width: 11.646%;" />
-                    </div>
-                    <img class="upper" src="zebra-hind-near-upper.png" alt="" style="left: 30.759%; top: 52.051%; width: 5.949%;" />
-                </div>
-                <div class="leg fore-near" style="transform-origin: 60% 52.93%;">
-                    <div class="shin" style="transform-origin: 61.266% 56.641%;">
-                        <img class="lower" src="zebra-fore-near-lower.png" alt="" style="left: 57.468%; top: 54.492%; width: 5.57%;" />
-                    </div>
-                    <img class="upper" src="zebra-fore-near-upper.png" alt="" style="left: 58.481%; top: 53.027%; width: 4.557%;" />
-                </div>
-            </div>
-            <a class="section-link archive" href="archive.html">archive</a>
-            <a class="section-link mixes" href="mixes.html">mixes</a>
-            <a class="section-link consume" href="consume.html">consume</a>
+        <div class="orbit-item mixes">
+            <a class="section-link" href="mixes.html">mixes</a>
         </div>
-        <a class="section-link contact" href="contact.html">contact</a>
+
+        <div class="orbit-item consume">
+            <a class="section-link" href="consume.html">consume</a>
+        </div>
+
+        <div class="orbit-item contact">
+            <a class="section-link" href="contact.html">contact</a>
+        </div>
+
+        <div class="orbit-item archive">
+            <a class="section-link" href="archive.html">archive</a>
+        </div>
     </nav>
+
+    <img class="corner-zebra" src="zebra-corner.jpg" alt="" aria-hidden="true" />
 
     <footer class="copyright">&copy; 2026</footer>
 
