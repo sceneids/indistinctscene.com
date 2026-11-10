@@ -25,38 +25,69 @@
             overflow: hidden;
         }
 
-        .time-location {
+        .tracker {
             position: fixed;
             top: 18px;
             left: 55%;
             z-index: 3;
             display: flex;
-            align-items: baseline;
-            gap: 14px;
+            align-items: center;
+            gap: 10px;
             color: #222;
-            font-family: "Times New Roman", Times, serif;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 11px;
             line-height: 1;
-            letter-spacing: -0.02em;
+            text-transform: lowercase;
             white-space: nowrap;
         }
 
-        .local-time {
-            color: #aaa;
+        .location-wrap {
+            position: relative;
+            display: block;
         }
 
-        .live-dot {
-            align-self: center;
-            width: 8px;
-            height: 8px;
+        .visitor-location {
+            display: block;
+            padding: 1px 2px;
+        }
+
+        .tracker.is-redacted .visitor-location {
+            background: #000;
+            color: transparent;
+            user-select: none;
+        }
+
+        .signal {
+            position: relative;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: #1db954;
-            animation: live-dot-pulse 2.4s ease-in-out infinite;
+            box-shadow: 0 0 6px 1px rgba(29, 185, 84, 0.8);
+        }
+
+        .signal::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 1px solid #1db954;
+            border-radius: 50%;
+            animation: signal-ping 2s ease-out infinite;
+        }
+
+        @keyframes signal-ping {
+            0% {
+                opacity: 0.9;
+                transform: scale(1);
+            }
+
+            70%,
+            100% {
+                opacity: 0;
+                transform: scale(4.5);
+            }
         }
 
         .about-link {
-            align-self: center;
             display: block;
             box-sizing: content-box;
             width: 8px;
@@ -77,20 +108,129 @@
             color: #1db954;
         }
 
-        @keyframes live-dot-pulse {
+        /* The man starts hidden behind the left end of the redaction bar: this box clips him there. */
+        .balloon-man {
+            --start: 0.4s;
+            position: absolute;
+            right: 100%;
+            bottom: 0;
+            width: 44px;
+            height: 28px;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .balloon-man svg {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 16px;
+            height: 26px;
+            overflow: visible;
+            transform: translateX(100%);
+        }
+
+        .man-leg {
+            transform-origin: 8px 21.4px;
+        }
+
+        .balloon ellipse {
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+
+        .burst {
+            opacity: 0;
+        }
+
+        .tracker.is-redacted .balloon-man svg {
+            animation:
+                man-walk 1.5s linear var(--start) forwards,
+                man-vanish 0.08s linear calc(var(--start) + 2.2s) forwards;
+        }
+
+        .tracker.is-redacted .man-leg {
+            animation: man-step 0.375s linear var(--start) 4;
+        }
+
+        .tracker.is-redacted .man-leg.back {
+            animation-direction: reverse;
+        }
+
+        .tracker.is-redacted .balloon.one ellipse,
+        .tracker.is-redacted .balloon.one line {
+            animation: balloon-pop 0.12s ease-in calc(var(--start) + 1.7s) forwards;
+        }
+
+        .tracker.is-redacted .balloon.two ellipse,
+        .tracker.is-redacted .balloon.two line {
+            animation: balloon-pop 0.12s ease-in calc(var(--start) + 1.9s) forwards;
+        }
+
+        .tracker.is-redacted .burst.one {
+            animation: balloon-burst 0.2s linear calc(var(--start) + 1.8s);
+        }
+
+        .tracker.is-redacted .burst.two {
+            animation: balloon-burst 0.2s linear calc(var(--start) + 2s);
+        }
+
+        @keyframes man-walk {
+            to {
+                transform: translateX(-18px);
+            }
+        }
+
+        @keyframes man-step {
             0%,
             100% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(22deg);
+            }
+
+            75% {
+                transform: rotate(-22deg);
+            }
+        }
+
+        @keyframes man-vanish {
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes balloon-pop {
+            80% {
+                opacity: 1;
+                transform: scale(1.4);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.4);
+            }
+        }
+
+        @keyframes balloon-burst {
+            from {
                 opacity: 1;
             }
 
-            50% {
-                opacity: 0.15;
+            to {
+                opacity: 0;
             }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .live-dot {
+            .signal::after {
                 animation: none;
+            }
+
+            .balloon-man {
+                display: none;
             }
         }
 
@@ -181,18 +321,39 @@
         }
 
         @media (max-width: 650px) {
-            .time-location {
+            .tracker {
                 left: auto;
                 right: 20px;
-                gap: 10px;
-                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="time-location" aria-label="24-hour local time and approximate location">
-        <span class="live-dot" aria-hidden="true"></span>
+    <div class="tracker" id="tracker" aria-label="Approximate location">
+        <span class="location-wrap">
+            <span class="balloon-man" aria-hidden="true">
+                <svg viewBox="0 0 16 26">
+                    <g class="balloon one">
+                        <line x1="4.2" y1="15.6" x2="3.6" y2="9.4" stroke="#000" stroke-width="0.3" />
+                        <ellipse cx="3.6" cy="6.6" rx="2.3" ry="2.8" fill="#d6202a" />
+                    </g>
+                    <g class="balloon two">
+                        <line x1="11.8" y1="15.6" x2="12.4" y2="8.6" stroke="#000" stroke-width="0.3" />
+                        <ellipse cx="12.4" cy="5.8" rx="2.3" ry="2.8" fill="#d6202a" />
+                    </g>
+                    <path class="burst one" d="M3.6 3v1.4M3.6 10.2V8.8M0 6.6h1.4M7.2 6.6H5.8M1.1 4.1l1 1M6.1 9.1l-1-1M6.1 4.1l-1 1M1.1 9.1l1-1" stroke="#d6202a" stroke-width="0.5" />
+                    <path class="burst two" d="M12.4 2.2v1.4M12.4 9.4V8M8.8 5.8h1.4M16 5.8h-1.4M9.9 3.3l1 1M14.9 8.3l-1-1M14.9 3.3l-1 1M9.9 8.3l1-1" stroke="#d6202a" stroke-width="0.5" />
+                    <path d="M6.5 17.4L4.2 15.6M9.5 17.4l2.3-1.8" stroke="#000" stroke-width="0.9" stroke-linecap="round" />
+                    <line class="man-leg" x1="7.4" y1="21.4" x2="7.2" y2="26" stroke="#000" stroke-width="1.2" />
+                    <line class="man-leg back" x1="8.6" y1="21.4" x2="8.8" y2="26" stroke="#000" stroke-width="1.2" />
+                    <circle cx="8" cy="14.9" r="1.7" fill="#000" />
+                    <rect x="6.2" y="16.8" width="3.6" height="5" rx="0.6" fill="#000" />
+                    <path d="M7.4 16.8h1.2L8 19z" fill="#fff" />
+                </svg>
+            </span>
+            <span class="visitor-location" id="visitor-location"></span>
+        </span>
+        <span class="signal" aria-hidden="true"></span>
         <a class="about-link" href="about.html" aria-label="About">
             <svg viewBox="0 0 16 16" aria-hidden="true">
                 <circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6" />
@@ -200,8 +361,6 @@
                 <rect x="7.1" y="6.8" width="1.8" height="5.4" fill="currentColor" />
             </svg>
         </a>
-        <time class="local-time" id="local-time"></time>
-        <span id="visitor-location"></span>
     </div>
 
     <main class="home-mark" aria-label="Indistinct Scene">
@@ -231,76 +390,31 @@
     <footer class="copyright">&copy; 2026</footer>
 
     <script>
-        const localTime = document.getElementById("local-time");
+        const tracker = document.getElementById("tracker");
         const visitorLocation = document.getElementById("visitor-location");
         const browserTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-        let localTimeFormat;
-
-        function getLocationName(timeZone) {
-            const timeZoneParts = timeZone.split("/");
-            const locationName = timeZoneParts[timeZoneParts.length - 1];
-
-            return locationName.replaceAll("_", " ");
-        }
-
-        function updateLocalTime() {
-            const now = new Date();
-            localTime.textContent = localTimeFormat.format(now);
-            localTime.dateTime = now.toISOString();
-        }
-
-        function setClockLocation(timeZone, locationName) {
-            try {
-                localTimeFormat = new Intl.DateTimeFormat("en-GB", {
-                    timeZone,
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hourCycle: "h23"
-                });
-            } catch {
-                timeZone = browserTimeZone;
-                localTimeFormat = new Intl.DateTimeFormat("en-GB", {
-                    timeZone,
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hourCycle: "h23"
-                });
-            }
-
-            visitorLocation.textContent = locationName || getLocationName(timeZone);
-            updateLocalTime();
-        }
 
         async function locateVisitorByIp() {
             try {
                 const response = await fetch(
-                    "https://ipwho.is/?fields=success,city,region,country_code,timezone",
+                    "https://ipwho.is/?fields=success,city,region,country_code",
                     { cache: "no-store" }
                 );
-
-                if (!response.ok) {
-                    throw new Error("Location lookup failed");
-                }
-
                 const location = await response.json();
-                if (!location.success || !location.timezone?.id) {
-                    throw new Error("Location lookup returned no timezone");
+                const locationName = location.success
+                    && (location.city || location.region || location.country_code);
+
+                if (locationName && !tracker.classList.contains("is-redacted")) {
+                    visitorLocation.textContent = locationName;
                 }
-
-                const locationName = location.city
-                    || location.region
-                    || location.country_code
-                    || getLocationName(location.timezone.id);
-
-                setClockLocation(location.timezone.id, locationName);
             } catch {
                 // Keep the browser timezone fallback when IP geolocation is unavailable.
             }
         }
 
-        setClockLocation(browserTimeZone);
+        visitorLocation.textContent = browserTimeZone.split("/").pop().replaceAll("_", " ");
         locateVisitorByIp();
-        setInterval(updateLocalTime, 30000);
+        setTimeout(() => tracker.classList.add("is-redacted"), 5000);
     </script>
     <script src="router.js"></script>
 </body>
