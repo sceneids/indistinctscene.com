@@ -130,19 +130,26 @@
             --step: clamp(26px, 3vw, 34px);
         }
 
+        /*
+            Each word is centred by layout (auto margins), not translate(-50%):
+            phones move the word using its width from before the font-size change,
+            which pushed it sideways mid-swipe and snapped it back at the end.
+        */
         .wheel-item {
             --y: 0px;
             position: fixed;
-            left: 50%;
-            top: 50%;
+            inset: 0;
             z-index: 2;
+            width: max-content;
+            height: 1em;
+            margin: auto;
             color: #000;
             font-size: var(--small);
             font-weight: 400;
             line-height: 1;
             text-decoration: none;
             white-space: nowrap;
-            transform: translate(-50%, calc(-50% + var(--y)));
+            transform: translateY(var(--y));
             transition: transform 0.35s ease, font-size 0.35s ease, opacity 0.35s ease;
         }
 
