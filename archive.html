@@ -9,24 +9,35 @@
 
         .site-home-i {
             position: fixed;
-            top: 18px;
+            top: 14px;
             left: 50%;
             z-index: 2;
+            padding: 3px 6px;
+            background: #fff;
             transform: translateX(-50%);
         }
 
         .photos {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            align-items: start;
-            column-gap: clamp(24px, 3vw, 44px);
-            row-gap: clamp(40px, 6vh, 72px);
-            padding: 6vh 4vw 10vh;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 44px 6px 6px;
         }
 
+        .row {
+            display: flex;
+            gap: 6px;
+        }
+
+        /* flex-grow equals each photo's aspect ratio, so both photos in a row end up the same height */
         .spot {
+            flex: 1.5088 1 0;
+            min-width: 0;
             margin: 0;
-            width: 100%;
+        }
+
+        .spot.port {
+            flex: 0.6628 1 0;
         }
 
         .spot img {
@@ -35,36 +46,9 @@
             height: auto;
         }
 
-        .c1-6 { grid-column: 1 / span 6; }
-        .c1-5 { grid-column: 1 / span 5; }
-        .c1-4 { grid-column: 1 / span 4; }
-        .c5-4 { grid-column: 5 / span 4; }
-        .c8-5 { grid-column: 8 / span 5; }
-        .c9-4 { grid-column: 9 / span 4; }
-
         @media (max-width: 800px) {
-            .photos {
-                display: flex;
+            .row {
                 flex-direction: column;
-                gap: 6vh;
-                padding: 7vh 6vw 10vh;
-            }
-
-            .spot {
-                width: min(86vw, 540px);
-                grid-column: auto;
-            }
-
-            .spot.port {
-                width: min(64vw, 360px);
-            }
-
-            .spot:nth-child(odd) {
-                align-self: flex-start;
-            }
-
-            .spot:nth-child(even) {
-                align-self: flex-end;
             }
         }
     </style>
@@ -72,66 +56,86 @@
 <body>
     <a class="site-home-i" href="index.html" aria-label="Back to home">i</a>
     <main class="photos" aria-label="archive">
-        <figure class="spot c1-6">
-            <img src="archive-photos/000078430009.jpg" srcset="archive-photos/800/000078430009.jpg 800w, archive-photos/1200/000078430009.jpg 1200w, archive-photos/000078430009.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 46vw" alt="" width="1800" height="1193" fetchpriority="high" />
-        </figure>
-        <figure class="spot port c9-4">
-            <img src="archive-photos/000078430011.jpg" srcset="archive-photos/800/000078430011.jpg 530w, archive-photos/1200/000078430011.jpg 795w, archive-photos/000078430011.jpg 1193w" sizes="(max-width: 800px) min(64vw, 360px), 30vw" alt="" width="1193" height="1800" fetchpriority="high" />
-        </figure>
-        <figure class="spot c1-5">
-            <img src="archive-photos/000078430018.jpg" srcset="archive-photos/800/000078430018.jpg 800w, archive-photos/1200/000078430018.jpg 1200w, archive-photos/000078430018.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c8-5">
-            <img src="archive-photos/000078430019.jpg" srcset="archive-photos/800/000078430019.jpg 800w, archive-photos/1200/000078430019.jpg 1200w, archive-photos/000078430019.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot port c1-4">
-            <img src="archive-photos/000078430022.jpg" srcset="archive-photos/800/000078430022.jpg 530w, archive-photos/1200/000078430022.jpg 795w, archive-photos/000078430022.jpg 1193w" sizes="(max-width: 800px) min(64vw, 360px), 30vw" alt="" width="1193" height="1800" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c8-5">
-            <img src="archive-photos/000078430023.jpg" srcset="archive-photos/800/000078430023.jpg 800w, archive-photos/1200/000078430023.jpg 1200w, archive-photos/000078430023.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c1-5">
-            <img src="archive-photos/000078430025.jpg" srcset="archive-photos/800/000078430025.jpg 800w, archive-photos/1200/000078430025.jpg 1200w, archive-photos/000078430025.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c8-5">
-            <img src="archive-photos/000078430026.jpg" srcset="archive-photos/800/000078430026.jpg 800w, archive-photos/1200/000078430026.jpg 1200w, archive-photos/000078430026.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c1-5">
-            <img src="archive-photos/000078430027.jpg" srcset="archive-photos/800/000078430027.jpg 800w, archive-photos/1200/000078430027.jpg 1200w, archive-photos/000078430027.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c8-5">
-            <img src="archive-photos/000078450005.jpg" srcset="archive-photos/800/000078450005.jpg 800w, archive-photos/1200/000078450005.jpg 1200w, archive-photos/000078450005.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c1-6">
-            <img src="archive-photos/000078450007.jpg" srcset="archive-photos/800/000078450007.jpg 800w, archive-photos/1200/000078450007.jpg 1200w, archive-photos/000078450007.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 46vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c8-5">
-            <img src="archive-photos/000078450012.jpg" srcset="archive-photos/800/000078450012.jpg 800w, archive-photos/1200/000078450012.jpg 1200w, archive-photos/000078450012.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c1-5">
-            <img src="archive-photos/000078450013.jpg" srcset="archive-photos/800/000078450013.jpg 800w, archive-photos/1200/000078450013.jpg 1200w, archive-photos/000078450013.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c8-5">
-            <img src="archive-photos/000078450015.jpg" srcset="archive-photos/800/000078450015.jpg 800w, archive-photos/1200/000078450015.jpg 1200w, archive-photos/000078450015.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c1-5">
-            <img src="archive-photos/000078450016.jpg" srcset="archive-photos/800/000078450016.jpg 800w, archive-photos/1200/000078450016.jpg 1200w, archive-photos/000078450016.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot port c9-4">
-            <img src="archive-photos/000078450019-v.jpg" srcset="archive-photos/800/000078450019-v.jpg 530w, archive-photos/1200/000078450019-v.jpg 795w, archive-photos/000078450019-v.jpg 1193w" sizes="(max-width: 800px) min(64vw, 360px), 30vw" alt="" width="1193" height="1800" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c1-6">
-            <img src="archive-photos/000078450020.jpg" srcset="archive-photos/800/000078450020.jpg 800w, archive-photos/1200/000078450020.jpg 1200w, archive-photos/000078450020.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 46vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c8-5">
-            <img src="archive-photos/000078450029.jpg" srcset="archive-photos/800/000078450029.jpg 800w, archive-photos/1200/000078450029.jpg 1200w, archive-photos/000078450029.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot port c1-4">
-            <img src="archive-photos/000095670002-v.jpg" srcset="archive-photos/800/000095670002-v.jpg 530w, archive-photos/1200/000095670002-v.jpg 795w, archive-photos/000095670002-v.jpg 1193w" sizes="(max-width: 800px) min(64vw, 360px), 30vw" alt="" width="1193" height="1800" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="spot c8-5">
-            <img src="archive-photos/000095670014.jpg" srcset="archive-photos/800/000095670014.jpg 800w, archive-photos/1200/000095670014.jpg 1200w, archive-photos/000095670014.jpg 1800w" sizes="(max-width: 800px) min(86vw, 540px), 38vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
-        </figure>
+        <div class="row">
+            <figure class="spot">
+                <img src="archive-photos/000078430009.jpg" srcset="archive-photos/800/000078430009.jpg 800w, archive-photos/1200/000078430009.jpg 1200w, archive-photos/000078430009.jpg 1800w" sizes="(max-width: 800px) 100vw, 70vw" alt="" width="1800" height="1193" fetchpriority="high" />
+            </figure>
+            <figure class="spot port">
+                <img src="archive-photos/000078430011.jpg" srcset="archive-photos/800/000078430011.jpg 530w, archive-photos/1200/000078430011.jpg 795w, archive-photos/000078430011.jpg 1193w" sizes="(max-width: 800px) 100vw, 31vw" alt="" width="1193" height="1800" fetchpriority="high" />
+            </figure>
+        </div>
+        <div class="row">
+            <figure class="spot">
+                <img src="archive-photos/000078430018.jpg" srcset="archive-photos/800/000078430018.jpg 800w, archive-photos/1200/000078430018.jpg 1200w, archive-photos/000078430018.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="spot">
+                <img src="archive-photos/000078430019.jpg" srcset="archive-photos/800/000078430019.jpg 800w, archive-photos/1200/000078430019.jpg 1200w, archive-photos/000078430019.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+        </div>
+        <div class="row">
+            <figure class="spot port">
+                <img src="archive-photos/000078430022.jpg" srcset="archive-photos/800/000078430022.jpg 530w, archive-photos/1200/000078430022.jpg 795w, archive-photos/000078430022.jpg 1193w" sizes="(max-width: 800px) 100vw, 31vw" alt="" width="1193" height="1800" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="spot">
+                <img src="archive-photos/000078430023.jpg" srcset="archive-photos/800/000078430023.jpg 800w, archive-photos/1200/000078430023.jpg 1200w, archive-photos/000078430023.jpg 1800w" sizes="(max-width: 800px) 100vw, 70vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+        </div>
+        <div class="row">
+            <figure class="spot">
+                <img src="archive-photos/000078430025.jpg" srcset="archive-photos/800/000078430025.jpg 800w, archive-photos/1200/000078430025.jpg 1200w, archive-photos/000078430025.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="spot">
+                <img src="archive-photos/000078430026.jpg" srcset="archive-photos/800/000078430026.jpg 800w, archive-photos/1200/000078430026.jpg 1200w, archive-photos/000078430026.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+        </div>
+        <div class="row">
+            <figure class="spot">
+                <img src="archive-photos/000078430027.jpg" srcset="archive-photos/800/000078430027.jpg 800w, archive-photos/1200/000078430027.jpg 1200w, archive-photos/000078430027.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="spot">
+                <img src="archive-photos/000078450005.jpg" srcset="archive-photos/800/000078450005.jpg 800w, archive-photos/1200/000078450005.jpg 1200w, archive-photos/000078450005.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+        </div>
+        <div class="row">
+            <figure class="spot">
+                <img src="archive-photos/000078450007.jpg" srcset="archive-photos/800/000078450007.jpg 800w, archive-photos/1200/000078450007.jpg 1200w, archive-photos/000078450007.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="spot">
+                <img src="archive-photos/000078450012.jpg" srcset="archive-photos/800/000078450012.jpg 800w, archive-photos/1200/000078450012.jpg 1200w, archive-photos/000078450012.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+        </div>
+        <div class="row">
+            <figure class="spot">
+                <img src="archive-photos/000078450013.jpg" srcset="archive-photos/800/000078450013.jpg 800w, archive-photos/1200/000078450013.jpg 1200w, archive-photos/000078450013.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="spot">
+                <img src="archive-photos/000078450015.jpg" srcset="archive-photos/800/000078450015.jpg 800w, archive-photos/1200/000078450015.jpg 1200w, archive-photos/000078450015.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+        </div>
+        <div class="row">
+            <figure class="spot">
+                <img src="archive-photos/000078450016.jpg" srcset="archive-photos/800/000078450016.jpg 800w, archive-photos/1200/000078450016.jpg 1200w, archive-photos/000078450016.jpg 1800w" sizes="(max-width: 800px) 100vw, 70vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="spot port">
+                <img src="archive-photos/000078450019-v.jpg" srcset="archive-photos/800/000078450019-v.jpg 530w, archive-photos/1200/000078450019-v.jpg 795w, archive-photos/000078450019-v.jpg 1193w" sizes="(max-width: 800px) 100vw, 31vw" alt="" width="1193" height="1800" loading="lazy" decoding="async" />
+            </figure>
+        </div>
+        <div class="row">
+            <figure class="spot">
+                <img src="archive-photos/000078450020.jpg" srcset="archive-photos/800/000078450020.jpg 800w, archive-photos/1200/000078450020.jpg 1200w, archive-photos/000078450020.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="spot">
+                <img src="archive-photos/000078450029.jpg" srcset="archive-photos/800/000078450029.jpg 800w, archive-photos/1200/000078450029.jpg 1200w, archive-photos/000078450029.jpg 1800w" sizes="(max-width: 800px) 100vw, 50vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+        </div>
+        <div class="row">
+            <figure class="spot port">
+                <img src="archive-photos/000095670002-v.jpg" srcset="archive-photos/800/000095670002-v.jpg 530w, archive-photos/1200/000095670002-v.jpg 795w, archive-photos/000095670002-v.jpg 1193w" sizes="(max-width: 800px) 100vw, 31vw" alt="" width="1193" height="1800" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="spot">
+                <img src="archive-photos/000095670014.jpg" srcset="archive-photos/800/000095670014.jpg 800w, archive-photos/1200/000095670014.jpg 1200w, archive-photos/000095670014.jpg 1800w" sizes="(max-width: 800px) 100vw, 70vw" alt="" width="1800" height="1193" loading="lazy" decoding="async" />
+            </figure>
+        </div>
     </main>
     <script src="router.js"></script>
 </body>
